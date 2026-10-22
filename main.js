@@ -1,20 +1,61 @@
-const { app, BrowserWindow, protocol, net, Menu } = require('electron');
+const { app, BaseWindow, WebContentsView, protocol, net, Menu, ipcMain } = require('electron');
 const path = require('path');
 const { pathToFileURL } = require('url');
+
+const BAR_H = 32;
 
 // Esquema próprio: faz caminhos como "/assets/..." e localStorage funcionarem offline.
 protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { standard: true, secure: true, supportFetchAPI: true, allowServiceWorkers: true } }
 ]);
 
+let win, bar, content;
+
+function layout() {
+  if (!win) return;
+  const { width, height } = win.getContentBounds();
+  const full = win.isFullScreen();
+  const h = full ? 0 : BAR_H;
+  bar.setVisible(!full);
+  bar.setBounds({ x: 0, y: 0, width, height: h });
+  content.setBounds({ x: 0, y: h, width, height: Math.max(0, height - h) });
+}
+
 function createWindow() {
   Menu.setApplicationMenu(null);
-  const win = new BrowserWindow({
-    width: 1280, height: 800, backgroundColor: '#0c1520', title: 'SIAB',
-    webPreferences: { contextIsolation: true, sandbox: true }
+  win = new BaseWindow({
+    width: 1280, height: 800, minWidth: 360, minHeight: 480,
+    frame: false, backgroundColor: '#0c1520', title: 'SIAB'
   });
-  win.loadURL('app://siab/index.html');
+
+  bar = new WebContentsView({
+    webPreferences: { preload: path.join(__dirname, 'preload-titlebar.js'), contextIsolation: true, sandbox: true }
+  });
+  content = new WebContentsView({ webPreferences: { contextIsolation: true, sandbox: true } });
+  win.contentView.addChildView(content);
+  win.contentView.addChildView(bar);
+
+  bar.webContents.loadFile(path.join(__dirname, 'shell', 'titlebar.html'));
+  content.webContents.loadURL('app://siab/index.html');
+
+  // F11 alterna tela cheia; Ctrl+Q sai.
+  content.webContents.on('before-input-event', (e, input) => {
+    if (input.type !== 'keyDown') return;
+    if (input.key === 'F11') { win.setFullScreen(!win.isFullScreen()); e.preventDefault(); }
+    if (input.control && input.key.toLowerCase() === 'q') app.quit();
+  });
+
+  for (const ev of ['resize', 'maximize', 'unmaximize', 'enter-full-screen', 'leave-full-screen']) win.on(ev, layout);
+  layout();
+  content.webContents.focus();
 }
+
+ipcMain.on('janela', (_e, acao) => {
+  if (!win) return;
+  if (acao === 'min') win.minimize();
+  else if (acao === 'max') win.isMaximized() ? win.unmaximize() : win.maximize();
+  else if (acao === 'close') app.quit();
+});
 
 app.whenReady().then(() => {
   const root = path.join(__dirname, 'www');

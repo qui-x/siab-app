@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<style>
+  html,body{margin:0;height:100%;background:#0c1520;color:#e8eef7;font:13px "Segoe UI",system-ui,sans-serif;user-select:none;overflow:hidden}
+  .bar{display:flex;align-items:center;height:100%;-webkit-app-region:drag}
+  .brand{display:flex;align-items:center;gap:8px;padding-left:12px;flex:1;min-width:0}
+  .brand img{width:16px;height:16px}
+  .brand span{opacity:.85;white-space:nowrap}
+  .btns{display:flex;height:100%;-webkit-app-region:no-drag}
+  button{width:46px;height:100%;border:0;background:transparent;color:#e8eef7;cursor:pointer;display:grid;place-items:center;padding:0}
+  button:hover{background:rgba(255,255,255,.1)}
+  button.close:hover{background:#e81123}
+  button:focus-visible{outline:2px solid #c084fc;outline-offset:-2px}
+  svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:1.2}
+</style></head>
+<body><div class="bar">
+  <div class="brand"><img src="../www/assets/siab-icone.svg" alt=""><span>SIAB — Simulador Interativo de Ácidos e Bases</span></div>
+  <div class="btns">
+    <button id="min" title="Minimizar" aria-label="Minimizar"><svg viewBox="0 0 12 12"><path d="M1 6h10"/></svg></button>
+    <button id="max" title="Maximizar" aria-label="Maximizar ou restaurar"><svg viewBox="0 0 12 12"><rect x="1.5" y="1.5" width="9" height="9"/></svg></button>
+    <button id="close" class="close" title="Sair do SIAB" aria-label="Sair do SIAB"><svg viewBox="0 0 12 12"><path d="M1 1l10 10M11 1L1 11"/></svg></button>
+  </div>
+</div>
+<script>
+  document.getElementById('min').onclick = () => window.siab.minimizar();
+  document.getElementById('max').onclick = () => window.siab.maximizar();
+  document.getElementById('close').onclick = () => window.siab.sair();
+  document.querySelector('.bar').ondblclick = (e) => { if (!e.target.closest('.btns')) window.siab.maximizar(); };
+</script></body></html>

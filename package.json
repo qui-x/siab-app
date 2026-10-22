@@ -16,6 +16,8 @@
     "productName": "SIAB",
     "files": [
       "main.js",
+      "preload-titlebar.js",
+      "shell/**/*",
       "www/**/*"
     ],
     "win": {
