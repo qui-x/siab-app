@@ -1,0 +1,75 @@
+{
+  "name": "SIAB — Simulador Interativo de Ácidos e Bases",
+  "short_name": "SIAB",
+  "description": "Investigue ácidos e bases com temas, missões, roteiros, instrumentos e relatórios.",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "id": "./",
+  "start_url": "./index.html#/",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#080c14",
+  "theme_color": "#0c1520",
+  "categories": [
+    "education"
+  ],
+  "icons": [
+    {
+      "src": "assets/icones/icone-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icones/icone-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icones/icone-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "assets/siab-icone.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Bancada",
+      "url": "./index.html#/laboratorio",
+      "icons": [
+        {
+          "src": "assets/icones/icone-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Manual",
+      "url": "./index.html#/manual",
+      "icons": [
+        {
+          "src": "assets/icones/icone-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Caderno",
+      "url": "./index.html#/caderno",
+      "icons": [
+        {
+          "src": "assets/icones/icone-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}

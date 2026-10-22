@@ -1,0 +1,2390 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#0c1520" />
+    <meta
+      name="description"
+      content="SIAB — A química das cores. Temas, missões e investigações de ácidos e bases para o ensino médio."
+    />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="SIAB" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <title>SIAB — A química das cores</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" type="image/svg+xml" href="assets/siab-icone.svg" />
+    <link rel="apple-touch-icon" href="assets/icones/apple-touch-icon.png" />
+    <link
+      rel="stylesheet"
+      href="vendor/dialog-polyfill/dialog-polyfill.css?v=1.0.0+20261012"
+    />
+    <link rel="stylesheet" href="css/stylesiab.css?v=1.0.0+20261012" />
+    <link rel="stylesheet" href="css/mobile-study.css?v=1.0.0+20261012" />
+    <script src="js/core/compatibilidade.js?v=1.0.0+20261012"></script>
+    <script src="a11y.js?v=1.0.0+20261012"></script>
+    <!-- Animação de abertura desligada pelo usuário: esconde antes de desenhar (ver js/ui/abertura.js). -->
+    <script>
+      try {
+        if (localStorage.getItem("siab_abertura") === "off")
+          document.documentElement.dataset.abertura = "off";
+      } catch (erro) {}
+    </script>
+    <link rel="stylesheet" href="css/investigacao.css?v=1.0.0+20261012" />
+    <link rel="stylesheet" href="css/workspace.css?v=1.0.0+20261012" />
+    <link rel="stylesheet" href="css/manual.css?v=1.0.0+20261012" />
+    <link rel="stylesheet" href="css/mobile-controls.css?v=1.0.0+20261012" />
+    <link rel="stylesheet" href="css/refinements.css?v=1.0.0+20261012" />
+  </head>
+  <body>
+    <noscript
+      ><p class="falha-abertura">
+        O SIAB precisa de JavaScript para os botões e os experimentos. Ative-o
+        no navegador e abra o endereço publicado do simulador.
+      </p></noscript
+    >
+    <div id="abertura" class="abertura" aria-hidden="true">
+      <div class="abertura-palco">
+        <svg class="abertura-tubos" viewBox="0 0 400 215"></svg>
+        <div class="abertura-marca">
+          <img src="assets/siab-icone.svg" alt="" width="46" height="46" />
+          <div>
+            <strong>SIAB</strong
+            ><span>Simulador Interativo de Ácidos e Bases</span
+            ><em>A química das cores</em>
+          </div>
+        </div>
+      </div>
+      <p class="abertura-pular">Toque ou aperte uma tecla para pular</p>
+    </div>
+    <svg width="0" height="0" class="svg-defs" aria-hidden="true">
+      <defs>
+        <filter id="f-protanopia">
+          <feColorMatrix
+            type="matrix"
+            values="0.567 0.433 0 0 0 0.558 0.442 0 0 0 0 0.242 0.758 0 0 0 0 0 1 0"
+          />
+        </filter>
+        <filter id="f-deuteranopia">
+          <feColorMatrix
+            type="matrix"
+            values="0.625 0.375 0 0 0 0.7 0.3 0 0 0 0 0.3 0.7 0 0 0 0 0 1 0"
+          />
+        </filter>
+        <filter id="f-tritanopia">
+          <feColorMatrix
+            type="matrix"
+            values="0.95 0.05 0 0 0 0 0.433 0.567 0 0 0 0.475 0.525 0 0 0 0 0 1 0"
+          />
+        </filter>
+        <filter id="f-acromatopsia">
+          <feColorMatrix
+            type="matrix"
+            values="0.299 0.587 0.114 0 0 0.299 0.587 0.114 0 0 0.299 0.587 0.114 0 0 0 0 0 1 0"
+          />
+        </filter>
+      </defs>
+    </svg>
+    <div id="colorblindOverlay" aria-hidden="true"></div>
+    <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+
+    <header class="app-header">
+      <button
+        id="menu-btn"
+        class="menu-btn"
+        type="button"
+        aria-haspopup="dialog"
+        aria-controls="app-drawer"
+        aria-expanded="false"
+        aria-label="Abrir menu"
+        title="Menu"
+      >
+        <span data-app-icon="menu"></span>
+      </button>
+      <a
+        class="header-brand"
+        href="#/"
+        aria-label="SIAB, Simulador Interativo de Ácidos e Bases: página principal"
+      >
+        <img src="assets/siab-icone.svg" alt="" width="30" height="30" />
+        <div>
+          <strong>SIAB</strong
+          ><span id="header-nome">Simulador Interativo de Ácidos e Bases</span>
+        </div>
+      </a>
+      <nav class="main-nav" aria-label="Seções principais">
+        <a href="#/inicio" data-nav="inicio">Início</a
+        ><a href="#/aprender" data-nav="aprender">Aprender</a
+        ><a href="#/missoes" data-nav="missoes">Missões</a
+        ><a href="#/roteiros" data-nav="roteiros">Roteiros Experimentais</a
+        ><a href="#/laboratorio" data-nav="laboratorio">Laboratório</a
+        ><a href="#/caderno" data-nav="caderno">Caderno</a
+        ><a href="#/manual" data-nav="manual">Manual</a>
+      </nav>
+      <div class="header-actions">
+        <button id="install-btn" class="text-btn" type="button" hidden>
+          Instalar app
+        </button>
+        <button
+          id="prepare-btn"
+          class="header-btn so-bancada"
+          type="button"
+          aria-controls="controls"
+          aria-expanded="false"
+          title="Prateleira e ajustes"
+        >
+          <span data-app-icon="setup"></span><span class="header-btn-texto">Prateleira</span>
+        </button>
+        <button
+          id="access-btn"
+          class="header-btn"
+          type="button"
+          aria-haspopup="dialog"
+          aria-controls="app-drawer"
+          title="Acessibilidade"
+        >
+          <span data-app-icon="accessibility"></span><span class="header-btn-texto">Acessibilidade</span>
+        </button>
+      </div>
+    </header>
+
+    <div id="activity-banner" class="activity-banner" hidden>
+      <span id="activity-caption"></span
+      ><button id="activity-finish" class="quiet-btn">Finalizar</button
+      ><button id="activity-exit" class="quiet-btn">Encerrar atividade</button>
+    </div>
+    <main id="conteudo" tabindex="-1">
+      <section data-tela="inicio" class="tela tela-inicio" hidden>
+        <header class="inicio-hero">
+          <div>
+            <p class="eyebrow">SIMULADOR INTERATIVO DE ÁCIDOS E BASES</p>
+            <h1 id="inicio-titulo" data-foco tabindex="-1">
+              A química <span>das cores</span>
+            </h1>
+            <p class="inicio-lema">Observe. Meça. Interprete. Investigue.</p>
+          </div>
+          <img
+            class="start-icon"
+            src="assets/siab-icone.svg"
+            alt=""
+            width="144"
+            height="144"
+          />
+        </header>
+        <div class="inicio-secao">
+          <h2>Escolha seu próximo passo</h2>
+          <span>Da curiosidade à descoberta</span>
+        </div>
+        <nav class="caminhos inicio-caminhos" aria-label="O que fazer no SIAB">
+          <a class="caminho caminho-laboratorio" href="#/laboratorio">
+            <span class="inicio-card-topo">
+              <span class="inicio-card-icone"
+                ><span data-app-icon="lab"></span
+              ></span>
+              <span class="inicio-tag">Bancada livre</span>
+            </span>
+            <span class="inicio-lab-convite">Explore na prática</span>
+            <strong>Laboratório</strong>
+            <span class="inicio-card-descricao"
+              >Monte sua bancada, combine soluções e acompanhe as
+              transformações.</span
+            >
+            <span class="inicio-lab-cores" aria-hidden="true"
+              ><i></i><i></i><i></i><i></i><i></i
+            ></span>
+            <span class="inicio-card-acao"
+              >Entrar no laboratório
+              <span data-app-icon="arrow"></span></span>
+          </a>
+          <a class="caminho caminho-aprender" href="#/aprender">
+            <span class="inicio-card-topo"
+              ><span class="inicio-card-icone"
+                ><span data-app-icon="learn"></span></span
+              ><span data-app-icon="arrow" class="inicio-card-seta"></span></span>
+            <strong>Aprender</strong>
+            <span>Entenda a química por trás de cada transformação.</span>
+            <span class="caminho-meta" id="inicio-temas-meta"
+              >Explore os temas</span
+            >
+          </a>
+          <a class="caminho caminho-missoes" href="#/missoes">
+            <span class="inicio-card-topo"
+              ><span class="inicio-card-icone"
+                ><span data-app-icon="mission"></span></span
+              ><span data-app-icon="arrow" class="inicio-card-seta"></span></span>
+            <strong>Missões</strong>
+            <span>Teste suas hipóteses e resolva desafios.</span>
+            <span class="caminho-meta" id="inicio-missoes-meta"
+              >Problemas para investigar</span
+            >
+          </a>
+          <a class="caminho caminho-roteiros" href="#/roteiros">
+            <span class="inicio-card-topo"
+              ><span class="inicio-card-icone"
+                ><span data-app-icon="protocol"></span></span
+              ><span data-app-icon="arrow" class="inicio-card-seta"></span></span>
+            <strong>Roteiros Experimentais</strong>
+            <span>Investigue com uma sequência de etapas.</span>
+            <span class="caminho-meta" id="inicio-roteiros-meta"
+              >Experimentos guiados</span
+            >
+          </a>
+          <a class="caminho caminho-caderno" href="#/caderno">
+            <span class="inicio-card-topo"
+              ><span class="inicio-card-icone"
+                ><span data-app-icon="notebook"></span></span
+              ><span data-app-icon="arrow" class="inicio-card-seta"></span></span>
+            <strong>Caderno</strong>
+            <span>Reúna registros e reveja suas descobertas.</span>
+            <span class="caminho-meta" id="inicio-caderno-meta"
+              >Seu espaço de anotações</span
+            >
+          </a>
+        </nav>
+        <footer class="inicio-nota">
+          <nav aria-label="Apoio e configurações">
+            <a href="#/manual">Manual de uso</a>
+            <a href="#/professor">Área do Professor</a>
+          </nav>
+          <button class="quiet-btn" data-startup-settings>
+            <span data-app-icon="professor"></span>Configurações de inicialização
+          </button>
+        </footer>
+      </section>
+      <section data-tela="aprender" class="tela" hidden>
+        <header class="tela-cabecalho">
+          <h1 data-foco tabindex="-1">Temas</h1>
+          <p>Escolha um tema. Todos permanecem disponíveis para revisitar.</p>
+        </header>
+        <div id="temas-lista" class="content-list"></div>
+      </section>
+      <section data-tela="missoes" class="tela" hidden>
+        <header class="tela-cabecalho">
+          <h1 data-foco tabindex="-1">Missões</h1>
+          <p>Problemas abertos à investigação, com condições de sucesso.</p>
+        </header>
+        <div id="missoes-lista" class="content-list"></div>
+      </section>
+      <section data-tela="roteiros" class="tela" hidden>
+        <header class="tela-cabecalho">
+          <h1 data-foco tabindex="-1">Roteiros Experimentais</h1>
+          <p>Escolha uma investigação e prepare a bancada.</p>
+        </header>
+        <div id="roteiros-lista" class="content-list"></div>
+      </section>
+      <section data-tela="montagens" class="tela" hidden>
+        <header class="tela-cabecalho">
+          <h1 data-foco tabindex="-1">Montagens prontas</h1>
+          <p>Configurações rápidas da bancada.</p>
+        </header>
+        <div id="montagens-lista" class="content-list"></div>
+      </section>
+      <section data-tela="tema" class="tela" hidden>
+        <div id="tema-conteudo" class="reading-column"></div>
+      </section>
+      <section data-tela="roteiro" class="tela" hidden>
+        <div id="roteiro-conteudo" class="reading-column"></div>
+      </section>
+      <section data-tela="atividade" class="tela" hidden>
+        <div id="atividade-conteudo" class="reading-column"></div>
+      </section>
+      <section data-tela="professor" class="tela" hidden>
+        <header class="tela-cabecalho">
+          <p class="eyebrow">ÁREA DO PROFESSOR</p>
+          <h1 data-foco tabindex="-1">Preparar atividade</h1>
+          <p>
+            Escolha o contexto, os instrumentos e as condições da investigação.
+          </p>
+        </header>
+        <label class="check-row"
+          ><input type="checkbox" id="projetor-check" />Modo projetor</label
+        >
+        <ol class="prof-steps" aria-label="Etapas da preparação">
+          <li><span>1</span> Escolha a atividade</li>
+          <li><span>2</span> Defina os recursos</li>
+          <li><span>3</span> Gere e confira como aluno</li>
+        </ol>
+        <form id="prof-form" class="prof-form">
+          <h2>1. Atividade e identificação</h2>
+          <label class="field"
+            >Tipo<select id="prof-tipo" name="tipo">
+              <option value="roteiro">Roteiro Experimental</option>
+              <option value="missao">Missão</option>
+              <option value="montagem">Montagem pronta</option>
+            </select></label
+          ><label class="field"
+            >Atividade<select id="prof-item" name="item"></select></label
+          ><label class="field"
+            >Título personalizado<input name="titulo" maxlength="200"
+          /></label>
+          <div id="prof-requisitos" class="prof-requisitos" role="status"></div>
+          <div id="prof-identificacao"></div>
+          <h2>2. Condições e recursos do aluno</h2>
+          <fieldset>
+            <legend>Temperatura</legend>
+            <label class="field"
+              >Condição<select name="temperaturaModo">
+                <option value="referencia">Referência 25 °C</option>
+                <option value="personalizada">Personalizada</option>
+                <option value="local">Ambiente local</option>
+              </select></label
+            ><label class="field"
+              >Temperatura personalizada (°C)<input
+                type="number"
+                min="0"
+                max="100"
+                step="0.1"
+                name="temperatura"
+                value="25" /></label
+            ><label class="field"
+              >Cidade (somente para ambiente local)<input
+                name="cidade"
+                maxlength="80"
+            /></label>
+          </fieldset>
+          <div class="prof-resource-grid">
+            <fieldset id="prof-instrumentos">
+              <legend>Instrumentos</legend>
+            </fieldset>
+            <fieldset id="prof-representacoes">
+              <legend>Representações</legend>
+            </fieldset>
+            <fieldset id="prof-analises"><legend>Análises</legend></fieldset>
+          </div>
+          <details class="prof-permissions">
+            <summary>O que o aluno pode alterar na montagem</summary>
+            <p class="field-hint">
+              Uma montagem restrita começa bloqueada. Libere somente as
+              alterações necessárias à investigação.
+            </p>
+            <div id="prof-permissoes" class="prof-resource-grid"></div>
+          </details>
+          <label class="field"
+            >Painel inicial<select name="initialView" id="prof-initial-view">
+              <option value="">Primeiro recurso disponível</option>
+            </select></label
+          >
+          <label class="field"
+            >Navegação<select name="navegacao">
+              <option value="restrita">Restrita à atividade</option>
+              <option value="livre">Livre</option>
+            </select></label
+          >
+          <p id="prof-erro" role="alert"></p>
+          <button type="button" id="prof-cancel-edit" class="quiet-btn" hidden>
+            Cancelar edição</button
+          ><button class="primary-btn" type="submit">
+            Validar e gerar atividade
+          </button>
+        </form>
+        <section id="prof-resultado" hidden>
+          <h2>Atividade gerada</h2>
+          <p id="prof-resumo"></p>
+          <label class="field"
+            >Link da atividade<input id="prof-link" readonly
+          /></label>
+          <div class="actions">
+            <button id="prof-copy" class="secondary-btn">Copiar link</button
+            ><a
+              id="prof-abrir"
+              class="secondary-btn"
+              target="_blank"
+              rel="noopener"
+              >Abrir como aluno</a
+            ><button id="prof-orientacoes" class="secondary-btn">
+              Ver orientações
+            </button>
+          </div>
+          <p class="field-hint">
+            O link não inclui respostas do professor. A restrição organiza a
+            navegação; não é proteção para provas contra edição do código.
+            Arquivos file:// devem ser copiados para o outro aparelho ou
+            servidos no mesmo endereço.
+          </p>
+        </section>
+        <h2>Atividades criadas</h2>
+        <p class="field-hint">
+          Atividades ficam neste navegador. Editar ou excluir não altera links
+          de aluno já enviados: cada link guarda a sua própria configuração.
+        </p>
+        <div id="atividades-recentes"></div>
+        <section id="prof-guia" class="teacher-material">
+          <div>
+            <p class="eyebrow">APOIO PEDAGÓGICO</p>
+            <h2>Material do professor</h2>
+            <p>
+              Orientações, discussão e referências para a atividade selecionada.
+            </p>
+          </div>
+          <div class="actions">
+            <button class="secondary-btn" id="prof-ver-guia">
+              Ver orientações</button
+            ><button class="secondary-btn" id="prof-print">
+              Imprimir Guia do Professor
+            </button>
+          </div>
+        </section>
+      </section>
+      <section data-tela="relatorio" class="tela" hidden>
+        <div class="report-actions actions">
+          <button id="relatorio-atualizar" class="secondary-btn">
+            Atualizar dados da bancada</button
+          ><button id="relatorio-registrar" class="secondary-btn">
+            Registrar no Caderno</button
+          ><button id="relatorio-print" class="secondary-btn">
+            Imprimir / Salvar como PDF</button
+          ><button id="relatorio-blank" class="secondary-btn">
+            Imprimir para preencher à mão</button
+          ><button id="relatorio-voltar" class="quiet-btn">
+            Voltar à bancada
+          </button>
+          <button id="relatorio-encerrar" class="secondary-btn" data-activity-close hidden>Encerrar atividade</button>
+        </div>
+        <div id="relatorio-config"></div>
+        <div id="relatorio-conteudo"></div>
+      </section>
+      <!-- CADERNO -->
+      <section
+        data-tela="caderno"
+        class="tela"
+        aria-labelledby="caderno-titulo"
+        hidden
+      >
+        <header class="tela-cabecalho">
+          <p class="eyebrow">CADERNO DE LABORATÓRIO</p>
+          <h1 id="caderno-titulo" data-foco tabindex="-1">Seu caderno</h1>
+          <p>Registros pessoais de investigações, hipóteses, descobertas e práticas.</p>
+        </header>
+        <div class="caderno-acoes">
+          <button type="button" id="caderno-csv" class="secondary-btn">
+            Baixar caderno (CSV)
+          </button>
+          <button type="button" id="caderno-imprimir" class="secondary-btn">
+            Imprimir
+          </button>
+          <button type="button" id="caderno-limpar" class="danger-btn">
+            Apagar caderno
+          </button>
+        </div>
+        <label class="field"
+          >Filtrar registros<select id="caderno-filtro">
+            <option value="todos">Todos</option>
+            <option value="pratica">Práticas realizadas</option><option value="experiencia">Experiências</option>
+            <option value="missao">Missões</option>
+            <option value="exploracao">Explorações</option>
+            <option value="anotacao">Anotações</option>
+          </select></label
+        >
+        <details class="annotation-form">
+          <summary>Nova anotação / hipótese / descoberta</summary>
+          <form id="caderno-anotacao">
+            <label class="field"
+              >Título<input name="titulo" required maxlength="160" /></label
+            ><label class="field"
+              >Anotação<textarea
+                name="texto"
+                rows="4"
+                required
+                maxlength="16000"
+              ></textarea></label
+            ><button class="primary-btn">Registrar no Caderno</button>
+          </form>
+        </details>
+        <div id="caderno-lista" class="caderno-lista"></div>
+      </section>
+
+      <!-- MANUAL: conteúdo e índice gerados pelo registro central -->
+      <section
+        data-tela="manual"
+        class="tela tela-manual"
+        aria-labelledby="manual-titulo"
+        hidden
+      >
+        <div class="manual-topbar">
+          <a class="manual-home-link" href="#/manual">Manual</a>
+          <form
+            id="manual-search-form"
+            role="search"
+            aria-label="Busca no Manual"
+          >
+            <label for="manual-busca">Buscar no Manual</label>
+            <div class="manual-search-field">
+              <input
+                id="manual-busca"
+                type="search"
+                maxlength="120"
+                autocomplete="off"
+                placeholder="pHmetro, titulação, relatório…"
+                aria-describedby="manual-status"
+              /><button
+                id="manual-clear"
+                type="button"
+                class="icon-btn"
+                aria-label="Limpar busca"
+                hidden
+              >
+                ×</button
+              ><button class="secondary-btn" type="submit">Buscar</button>
+            </div>
+          </form>
+          <a class="secondary-btn" href="#/laboratorio">Voltar à bancada</a>
+        </div>
+        <div class="manual-tools">
+          <button
+            id="manual-index-toggle"
+            type="button"
+            class="secondary-btn"
+            aria-expanded="false"
+            aria-controls="manual-indice"
+          >
+            Índice do Manual</button
+          ><button id="manual-imprimir" type="button" class="quiet-btn">
+            Imprimir guia rápido
+          </button>
+        </div>
+        <p
+          id="manual-status"
+          class="sr-only"
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+        ></p>
+        <div class="manual-shell">
+          <nav
+            id="manual-indice"
+            class="manual-index"
+            aria-label="Índice do Manual"
+          ></nav>
+          <div id="manual-conteudo"></div>
+        </div>
+        <div id="manual-print"></div>
+      </section>
+
+      <!-- BANCADA: laboratório livre e missões -->
+      <div
+        id="workspace"
+        data-tela="bancada"
+        class="workspace"
+        data-modo="laboratorio"
+        hidden
+      >
+        <aside id="controls" class="controls" aria-labelledby="controls-title">
+          <div class="sheet-handle" aria-hidden="true"></div>
+          <div
+            class="trilho"
+            id="trilho-controls"
+            aria-label="Prateleira recolhida"
+            role="group"
+            hidden
+          ></div>
+          <div class="painel-conteudo">
+            <div class="controls-heading">
+              <h2 id="controls-title">Prateleira</h2>
+              <a
+                class="ajuda-link"
+                href="#/manual/prateleira"
+                aria-label="Ajuda: prateleira de frascos"
+                title="Ajuda: prateleira de frascos"
+                >?</a
+              >
+              <button
+                type="button"
+                class="recolher-btn"
+                data-recolher="controls"
+                aria-controls="controls"
+                aria-expanded="true"
+                aria-label="Recolher prateleira"
+                title="Recolher prateleira"
+              >
+                <span data-app-icon="back"></span>
+              </button>
+              <button
+                type="button"
+                class="fechar-flutuante"
+                aria-label="Fechar cartão"
+                title="Fechar (Esc)"
+              >
+                <span data-app-icon="close"></span>
+              </button>
+              <button
+                id="close-controls"
+                type="button"
+                class="icon-btn mobile-control"
+                aria-label="Fechar painel"
+              >
+                ×
+              </button>
+            </div>
+            <section
+              id="activity-montagem"
+              data-secao="montagem"
+              class="painel-secao"
+              hidden
+            ></section>
+            <div id="painel-laboratorio">
+              <div class="painel-secao" data-secao="nivel">
+                <p class="secao-rotulo" id="modulos-rotulo">
+                  Módulos
+                  <a
+                    class="ajuda-link"
+                    href="#/manual/modulos"
+                    aria-label="Ajuda: módulos"
+                    title="Ajuda: módulos"
+                    >?</a
+                  >
+                </p>
+                <div
+                  id="modulos"
+                  class="modulos"
+                  role="group"
+                  aria-labelledby="modulos-rotulo"
+                ></div>
+              </div>
+              <div class="painel-secao" data-secao="vidraria">
+                <fieldset class="vidraria-opcoes" id="vidraria-grupo">
+                  <legend>
+                    Vidraria
+                    <a
+                      class="ajuda-link"
+                      href="#/manual/vidraria"
+                      aria-label="Ajuda: vidraria"
+                      title="Ajuda: vidraria"
+                      >?</a
+                    >
+                  </legend>
+                  <label
+                    ><input type="radio" name="vidraria" value="tubo" /><svg
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                    >
+                      <path d="M8.5 3h7M10 3v14.5a2 2 0 0 0 4 0V3" /></svg
+                    ><span>Tubo de ensaio</span></label
+                  >
+                  <label
+                    ><input type="radio" name="vidraria" value="bequer" /><svg
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M4 4c1 .3 2 1 2 2.5V19a1.5 1.5 0 0 0 1.5 1.5h9A1.5 1.5 0 0 0 18 19V4.5M9 10h3M9 14h3"
+                      /></svg
+                    ><span>Béquer</span></label
+                  >
+                  <label
+                    ><input
+                      type="radio"
+                      name="vidraria"
+                      value="erlenmeyer"
+                    /><svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path
+                        d="M9 3h6M10 3v6L5 19a1.5 1.5 0 0 0 1.3 2h11.4a1.5 1.5 0 0 0 1.3-2L14 9V3"
+                      /></svg
+                    ><span>Erlenmeyer</span></label
+                  >
+                </fieldset>
+                <fieldset
+                  class="segmented capacidade-grupo"
+                  id="capacidade-grupo"
+                  hidden
+                >
+                  <legend>Capacidade (mL)</legend>
+                  <div id="capacidade-opcoes" class="capacidade-opcoes"></div>
+                </fieldset>
+                <p id="vidraria-dica" class="field-hint"></p>
+              </div>
+              <div class="painel-secao" data-secao="frascos" id="secao-frascos">
+                <p class="secao-rotulo">
+                  Frascos
+                  <a
+                    class="ajuda-link"
+                    href="#/manual/prateleira"
+                    aria-label="Ajuda: frascos"
+                    title="Ajuda: frascos"
+                    >?</a
+                  >
+                </p>
+                <div class="menu-frasco">
+                  <button
+                    type="button"
+                    class="menu-frasco-cab"
+                    id="menu-tubo"
+                    aria-expanded="false"
+                    aria-controls="menu-frasco-corpo"
+                  >
+                    <svg
+                      class="menu-frasco-icone"
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                    >
+                      <path d="M8.5 3h7M10 3v14.5a2 2 0 0 0 4 0V3M10 11h4" />
+                    </svg>
+                    <span class="menu-frasco-texto"
+                      ><span class="menu-frasco-rotulo">Tubo</span
+                      ><span class="sr-only">: </span
+                      ><strong class="menu-frasco-atual"></strong
+                    ></span>
+                    <span class="menu-frasco-cor" aria-hidden="true"></span>
+                    <span data-app-icon="dropdown" class="chevron"></span>
+                  </button>
+                  <div
+                    id="menu-frasco-corpo"
+                    class="menu-frasco-corpo"
+                    role="region"
+                    aria-labelledby="menu-tubo"
+                    hidden
+                  >
+                    <label class="field shelf-search"
+                      >Buscar frasco
+                      <input
+                        id="shelf-search"
+                        type="search"
+                        autocomplete="off"
+                        placeholder="limão, vinagre, NaOH…"
+                      />
+                    </label>
+                    <div id="shelf" class="shelf"></div>
+                  </div>
+                </div>
+                <div class="menu-frasco">
+                  <button
+                    type="button"
+                    class="menu-frasco-cab"
+                    id="menu-gotas"
+                    aria-expanded="false"
+                    aria-controls="menu-frasco-corpo"
+                  >
+                    <svg
+                      class="menu-frasco-icone"
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M10 3h4v5h-4zM9 8h6M11 8v8l1 2 1-2V8M12 20.5v.5"
+                      />
+                    </svg>
+                    <span class="menu-frasco-texto"
+                      ><span class="menu-frasco-rotulo">Conta-gotas</span
+                      ><span class="sr-only">: </span
+                      ><strong class="menu-frasco-atual"></strong
+                    ></span>
+                    <span class="menu-frasco-cor" aria-hidden="true"></span>
+                    <span data-app-icon="dropdown" class="chevron"></span>
+                  </button>
+                </div>
+              </div>
+              <div class="painel-secao" data-secao="indicador">
+                <fieldset class="chips" id="indicator-group">
+                  <legend>
+                    Indicador
+                    <a
+                      class="ajuda-link"
+                      href="#/manual/indicadores"
+                      aria-label="Ajuda: indicadores"
+                      title="Ajuda: indicadores"
+                      >?</a
+                    >
+                  </legend>
+                  <div id="indicator-chips" class="chip-list"></div>
+                </fieldset>
+                <p id="indicator-range" class="field-hint"></p>
+                <label class="check-row indicator-mode"
+                  ><input type="checkbox" id="indicator-only" />Realçar
+                  indicador
+                  <span class="small"
+                    >Oculta a cor própria da amostra</span
+                  ></label
+                >
+              </div>
+              <div class="painel-secao" data-secao="ajustes">
+                <details id="ajustes" class="ajustes" open>
+                  <summary>Ajustes de medida</summary>
+                  <form id="prepare-form" novalidate>
+                    <p class="field-hint">
+                      Números do preparo.
+                      <a href="#/manual/medidas">Como usar os ajustes</a>
+                    </p>
+                    <div class="field-pair">
+                      <label class="field" id="concentration-field"
+                        >Concentração no tubo <span class="unit">mol/L</span>
+                        <input
+                          id="concentration"
+                          type="number"
+                          inputmode="decimal"
+                          min="0.0001"
+                          max="0.1"
+                          step="any"
+                          required
+                        />
+                      </label>
+                      <label class="field" id="dilution-field"
+                        >Diluição da amostra
+                        <select
+                          id="dilution-select"
+                          data-label="Diluição da amostra do tubo"
+                        >
+                          <option value="1">Como preparada</option>
+                          <option value="2">1 parte + 1 de água</option>
+                          <option value="5">1 parte + 4 de água</option>
+                          <option value="10">1 parte + 9 de água</option>
+                        </select>
+                      </label>
+                      <label class="field"
+                        >Volume inicial <span class="unit">mL</span>
+                        <input
+                          id="initial-volume"
+                          type="number"
+                          inputmode="decimal"
+                          min="0.1"
+                          max="4"
+                          step="any"
+                          required
+                        />
+                      </label>
+                    </div>
+                    <div class="field-pair">
+                      <label class="field" id="titrant-concentration-field"
+                        >Concentração no conta-gotas
+                        <span class="unit">mol/L</span>
+                        <input
+                          id="titrant-concentration"
+                          type="number"
+                          inputmode="decimal"
+                          min="0.0001"
+                          max="0.1"
+                          step="any"
+                          required
+                        />
+                      </label>
+                      <label class="field" id="titrant-dilution-field"
+                        >Diluição no conta-gotas
+                        <select
+                          id="titrant-dilution-select"
+                          data-label="Diluição do conta-gotas"
+                        >
+                          <option value="1">Como preparada</option>
+                          <option value="2">1 parte + 1 de água</option>
+                          <option value="5">1 parte + 4 de água</option>
+                          <option value="10">1 parte + 9 de água</option>
+                        </select>
+                      </label>
+                      <label class="field"
+                        >Volume da gota <span class="unit">mL</span>
+                        <select
+                          id="drop-volume"
+                          data-label="Volume de cada gota"
+                        >
+                          <option value="0.01">0,01</option>
+                          <option value="0.02">0,02</option>
+                          <option value="0.05">0,05</option>
+                          <option value="0.1">0,10</option>
+                        </select>
+                      </label>
+                    </div>
+                    <p
+                      id="prepare-error"
+                      class="form-error"
+                      role="alert"
+                      hidden
+                    ></p>
+                    <p class="field-hint">
+                      Aplicar as medidas recomeça as gotas do tubo. Você pode
+                      desfazer.
+                    </p>
+                    <button class="secondary-btn full-width" type="submit">
+                      Aplicar medidas
+                    </button>
+                  </form>
+                </details>
+              </div>
+              <div class="painel-secao" data-secao="acoes">
+                <div class="panel-actions">
+                  <button id="compare-btn" type="button" class="secondary-btn">
+                    Comparar indicadores
+                  </button>
+                  <button
+                    id="unlink-btn"
+                    type="button"
+                    class="quiet-btn"
+                    hidden
+                  >
+                    Desvincular este tubo
+                  </button>
+                  <button id="restart-btn" type="button" class="quiet-btn">
+                    Recomeçar gotas
+                  </button>
+                  <button id="remove-btn" type="button" class="danger-btn">
+                    Remover tubo
+                  </button>
+                  <a class="secondary-btn" href="#/montagens"
+                    >Montagens prontas</a
+                  >
+                </div>
+              </div>
+            </div>
+            <div
+              id="painel-missao"
+              class="painel-secao"
+              data-secao="missao"
+              hidden
+            ></div>
+            <div class="painel-secao" data-secao="relatorio">
+              <p class="secao-rotulo">Relatório</p>
+              <p id="relatorio-selecao-resumo" class="field-hint">
+                Dados medidos e registro da investigação.
+              </p>
+              <button
+                id="imprimir-relatorio"
+                type="button"
+                class="secondary-btn full-width"
+                aria-describedby="relatorio-selecao-resumo"
+              >
+                Abrir relatório
+              </button>
+            </div>
+          </div>
+        </aside>
+
+        <section id="experiment" class="experiment" aria-label="Bancada">
+          <nav class="view-tabs" aria-label="Visualização da bancada">
+            <button
+              class="view-tab-btn"
+              id="focus-tab"
+              type="button"
+              aria-pressed="true"
+            >
+              Tubo em foco
+            </button>
+            <button
+              class="view-tab-btn"
+              id="overview-tab"
+              type="button"
+              aria-pressed="false"
+            >
+              Visão geral <span id="overview-count"></span>
+            </button>
+            <span class="chip-sep" aria-hidden="true"></span>
+            <button
+              type="button"
+              class="chip-ver"
+              data-ir-ver="grafico"
+              aria-pressed="false"
+            >
+              Gráfico
+            </button>
+            <button
+              type="button"
+              class="chip-ver"
+              data-ir-ver="particulas"
+              aria-pressed="false"
+            >
+              Partículas
+            </button>
+            <button
+              type="button"
+              class="chip-ver"
+              data-ir-ver="condutividade"
+              aria-pressed="false"
+            >
+              Condução
+            </button>
+            <button
+              type="button"
+              class="chip-ver"
+              data-ir-ver="equacao"
+              aria-pressed="false"
+            >
+              Equação
+            </button>
+            <button
+              type="button"
+              class="chip-ver"
+              data-ir-ver="historico"
+              aria-pressed="false"
+            >
+              Histórico
+            </button>
+            <span class="view-tabs-mode" id="bench-mode"></span>
+          </nav>
+
+          <section
+            id="focus-view"
+            class="focus-view"
+            aria-label="Tubo selecionado"
+          >
+            <div class="focus-heading">
+              <div>
+                <p class="eyebrow" id="tube-index"></p>
+                <div class="name-row">
+                  <h1 id="tube-name" data-foco tabindex="-1"></h1>
+                  <button
+                    id="rename-btn"
+                    type="button"
+                    class="icon-btn"
+                    aria-label="Renomear tubo"
+                  >
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path
+                        d="m15 4 5 5M4 20l4-1L20 7a2 2 0 0 0-3-3L5 16l-1 4Z"
+                      />
+                    </svg>
+                  </button>
+                </div>
+                <div class="resumo-linha">
+                  <span id="sample-summary" class="small"></span>
+                  <details
+                    id="sample-model-note"
+                    class="nota-estimativa"
+                    hidden
+                  >
+                    <summary>≈ estimativa</summary>
+                    <span
+                      >Amostra representativa: o pH e a resposta às gotas são
+                      estimativas. Amostras reais variam.</span
+                    >
+                  </details>
+                </div>
+              </div>
+            </div>
+            <div id="group-notice" class="group-notice" hidden></div>
+            <div id="boas-vindas" class="boas-vindas" role="note" hidden>
+              <p>
+                <strong>Primeira vez no laboratório?</strong> O tour mostra cada
+                doca da bancada. Consulte o Manual e explore Montagens prontas,
+                Roteiros e Missões.
+              </p>
+              <div>
+                <button type="button" class="primary-btn" id="boas-vindas-tour">
+                  Fazer o tour</button
+                ><a
+                  class="secondary-btn"
+                  href="#/manual"
+                  id="boas-vindas-manual"
+                  >Abrir o manual</a
+                ><button
+                  type="button"
+                  class="quiet-btn"
+                  id="boas-vindas-fechar"
+                >
+                  Agora não
+                </button>
+              </div>
+            </div>
+            <div id="bancada-vazia" class="bancada-vazia" hidden>
+              <svg
+                class="bancada-vazia-desenho"
+                viewBox="0 0 180 120"
+                aria-hidden="true"
+              >
+                <path
+                  class="suporte"
+                  d="M14 84h152M24 84v26M156 84v26M14 58h152"
+                />
+                <g class="tubo-vazio">
+                  <path d="M46 20v74a10 10 0 0 0 20 0V20" />
+                  <path d="M42 20h28" />
+                </g>
+                <g class="tubo-vazio">
+                  <path d="M80 20v74a10 10 0 0 0 20 0V20" />
+                  <path d="M76 20h28" />
+                </g>
+                <g class="tubo-vazio">
+                  <path d="M114 20v74a10 10 0 0 0 20 0V20" />
+                  <path d="M110 20h28" />
+                </g>
+                <path
+                  class="gota-vazia"
+                  d="M90 2c3 5 5 8 5 10.5a5 5 0 0 1-10 0C85 10 87 7 90 2Z"
+                />
+              </svg>
+              <h1 id="vazia-titulo" data-foco tabindex="-1">Bancada vazia</h1>
+              <p>
+                Abra <strong>Montagem → Preparo</strong> para escolher uma
+                solução. Depois ajuste o indicador e o reagente do conta-gotas.
+              </p>
+              <div class="bancada-vazia-acoes">
+                <button type="button" id="vazia-prateleira" class="primary-btn">
+                  Abrir Montagem
+                </button>
+                <button type="button" id="vazia-agua" class="secondary-btn">
+                  + Tubo com água
+                </button>
+                <a class="secondary-btn" href="#/montagens"
+                  >Montagens prontas</a
+                >
+                <button
+                  type="button"
+                  id="vazia-desfazer"
+                  class="quiet-btn"
+                  hidden
+                >
+                  ↶ Desfazer
+                </button>
+              </div>
+            </div>
+            <button
+              id="mission-bar"
+              type="button"
+              class="mission-bar"
+              hidden
+            ></button>
+
+            <div class="tube-stage">
+              <div class="stage-stats">
+                <div class="ph-rotulo">
+                  <span class="eyebrow">pH</span
+                  ><a
+                    class="ajuda-link"
+                    href="#/manual/leitura"
+                    aria-label="Ajuda: leitura do tubo"
+                    title="Ajuda: leitura do tubo"
+                    >?</a
+                  ><button
+                    id="ph-toggle"
+                    type="button"
+                    class="olho-btn"
+                    aria-pressed="true"
+                    aria-label="Mostrar pH"
+                    title="Ocultar pH"
+                  >
+                    <svg
+                      class="olho-aberto"
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"
+                      />
+                      <circle cx="12" cy="12" r="3" /></svg
+                    ><svg
+                      class="olho-fechado"
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M3 3l18 18M10.6 5.1A10.5 10.5 0 0 1 12 5c6.4 0 10 7 10 7a17 17 0 0 1-3.2 4.2M6.6 6.6C3.8 8.4 2 12 2 12s3.6 7 10 7a9.7 9.7 0 0 0 5.4-1.6M9.9 9.9a3 3 0 0 0 4.2 4.2"
+                      />
+                    </svg>
+                  </button>
+                </div>
+                <div class="ph-readout">
+                  <strong id="ph-value"></strong
+                  ><span id="ph-phase" class="phase"></span>
+                </div>
+                <span
+                  id="ph-delta"
+                  class="ph-delta"
+                  aria-hidden="true"
+                  hidden
+                ></span>
+              </div>
+              <div id="large-tube" class="large-tube"></div>
+              <div class="volume-readout">
+                <span class="eyebrow">Volume</span>
+                <strong
+                  ><span id="volume-value"></span> <small>mL</small></strong
+                >
+                <span class="small capacity"
+                  >de <span id="capacity-value">5,00</span> mL</span
+                >
+                <span
+                  id="temperature-value"
+                  class="temperature-readout"
+                  hidden
+                ></span>
+              </div>
+            </div>
+            <div class="color-reading">
+              <span
+                id="color-swatch"
+                class="color-swatch"
+                aria-hidden="true"
+              ></span>
+              <p>
+                <strong id="color-name"></strong>
+                <span id="indicator-name" class="small"></span>
+              </p>
+              <button
+                id="agitar-btn"
+                type="button"
+                class="agitar-btn"
+                title="Agitar: mistura o recipiente por igual (girar o erlenmeyer, mexer o béquer)"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M4 12a8 8 0 0 1 13.7-5.6M20 12a8 8 0 0 1-13.7 5.6M17.7 3v3.4h-3.4M6.3 21v-3.4h3.4"
+                  /></svg
+                ><span>Agitar</span>
+              </button>
+            </div>
+            <p id="vidro-nota" class="vidro-nota"></p>
+            <p
+              id="equivalence-note"
+              class="equivalence-note"
+              aria-live="polite"
+            ></p>
+
+            <div id="dose-area" class="dose-area">
+              <div class="dose-info">
+                <span id="titrant-label"></span
+                ><a
+                  class="ajuda-link"
+                  href="#/manual/conta-gotas"
+                  aria-label="Ajuda: conta-gotas"
+                  title="Ajuda: conta-gotas"
+                  >?</a
+                ><span id="dose-summary"></span>
+              </div>
+              <div class="dose-barra">
+                <div class="dose-actions">
+                  <button
+                    id="undo-btn"
+                    type="button"
+                    class="secondary-btn"
+                    aria-label="Desfazer última ação"
+                  >
+                    ↶ <span>Desfazer</span>
+                  </button>
+                  <button
+                    id="drop-btn"
+                    type="button"
+                    class="primary-btn drop-btn"
+                  >
+                    + Segure para gotejar
+                  </button>
+                </div>
+                <div class="dose-shortcuts" id="dose-shortcuts">
+                  <button
+                    id="meia-gota-btn"
+                    type="button"
+                    class="secondary-btn"
+                    hidden
+                    title="Meia gota: a gota fica pendurada na ponta da bureta, encosta na parede e é lavada para dentro"
+                  >
+                    ½ gota
+                  </button>
+                  <button id="drop5-btn" type="button" class="secondary-btn">
+                    +5 gotas
+                  </button>
+                  <button id="drop1ml-btn" type="button" class="secondary-btn">
+                    +1 mL
+                  </button>
+                  <button
+                    id="drop5ml-btn"
+                    type="button"
+                    class="secondary-btn"
+                    hidden
+                  >
+                    +5 mL
+                  </button>
+                  <button id="poe-btn" type="button" class="secondary-btn">
+                    Prever<span class="poe-longo">&nbsp;e gotejar</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section
+            id="overview-view"
+            class="overview-view"
+            aria-labelledby="overview-title"
+            hidden
+          >
+            <div class="overview-heading">
+              <h1 id="overview-title" tabindex="-1">Sua bancada</h1>
+              <div class="overview-heading-actions">
+                <button
+                  type="button"
+                  id="selecionar-tubos-btn"
+                  class="secondary-btn"
+                  aria-controls="overview-grid selecao-tubos"
+                  aria-pressed="false"
+                >
+                  Selecionar recipientes
+                </button>
+                <button
+                  type="button"
+                  id="ordenar-ph-btn"
+                  class="ordenar-ph-btn"
+                  aria-pressed="false"
+                >
+                  Ordenar por pH
+                </button>
+              </div>
+              <p id="overview-hint">
+                Toque em um tubo para editar. Para selecionar vários, use Ctrl +
+                clique ou pressione e segure um tubo.
+              </p>
+            </div>
+            <div
+              id="selecao-tubos"
+              class="overview-selection"
+              role="group"
+              aria-label="Ações dos recipientes selecionados"
+              hidden
+            >
+              <p
+                id="selecao-tubos-contagem"
+                role="status"
+                aria-live="polite"
+              ></p>
+              <div class="overview-selection-actions">
+                <button
+                  type="button"
+                  id="selecao-todos-btn"
+                  class="secondary-btn"
+                >
+                  Selecionar todos</button
+                ><button
+                  type="button"
+                  id="selecao-comparar-btn"
+                  class="secondary-btn"
+                >
+                  Comparar</button
+                ><button
+                  type="button"
+                  id="selecao-vincular-btn"
+                  class="secondary-btn"
+                >
+                  Vincular</button
+                ><button
+                  type="button"
+                  id="selecao-desvincular-btn"
+                  class="secondary-btn"
+                >
+                  Desvincular</button
+                ><button
+                  type="button"
+                  id="selecao-misturar-btn"
+                  class="secondary-btn"
+                >
+                  Misturar recipientes</button
+                ><button
+                  type="button"
+                  id="selecao-registrar-btn"
+                  class="secondary-btn"
+                >
+                  Registrar</button
+                ><button
+                  type="button"
+                  id="selecao-remover-btn"
+                  class="danger-btn"
+                >
+                  Remover</button
+                ><button
+                  type="button"
+                  id="selecao-cancelar-btn"
+                  class="secondary-btn"
+                >
+                  Cancelar
+                </button>
+              </div>
+            </div>
+            <div id="overview-grid" class="overview-grid"></div>
+          </section>
+
+          <div class="tube-strip" aria-labelledby="strip-title">
+            <div class="strip-heading">
+              <span class="eyebrow" id="strip-title"
+                >BANCADA
+                <a
+                  class="ajuda-link"
+                  href="#/manual/tubos"
+                  aria-label="Ajuda: tubos da bancada"
+                  title="Ajuda: tubos da bancada"
+                  >?</a
+                ></span
+              >
+              <span id="tube-count" class="count"></span>
+            </div>
+            <div id="tube-list" class="tube-list"></div>
+            <button
+              id="add-tube-btn"
+              type="button"
+              class="secondary-btn strip-add"
+              data-action="add"
+            >
+              + Novo tubo
+            </button>
+          </div>
+        </section>
+
+        <aside id="ver-panel" class="ver-panel" aria-labelledby="ver-title">
+          <div
+            class="trilho"
+            id="trilho-ver"
+            aria-label="Painel VER recolhido"
+            role="group"
+            hidden
+          ></div>
+          <div class="painel-conteudo">
+            <div class="ver-cabecalho">
+              <button
+                type="button"
+                class="recolher-btn"
+                data-recolher="ver-panel"
+                aria-controls="ver-panel"
+                aria-expanded="true"
+                aria-label="Recolher painel VER"
+                title="Recolher painel VER"
+              >
+                <span data-app-icon="arrow"></span>
+              </button>
+              <h2 id="ver-title" class="eyebrow">VER</h2>
+              <a
+                class="ajuda-link"
+                href="#/manual/ver"
+                aria-label="Ajuda: painel VER"
+                title="Ajuda: painel VER"
+                >?</a
+              ><button
+                type="button"
+                class="fechar-flutuante"
+                aria-label="Fechar cartão"
+                title="Fechar (Esc)"
+              >
+                <span data-app-icon="close"></span>
+              </button>
+            </div>
+            <!-- Escala de pH (saiu do centro da bancada): marcador no pH e faixa de viragem do indicador. -->
+            <div id="ver-regua" class="ver-regua" hidden></div>
+            <div id="ver-tabs" class="ver-tabs"></div>
+            <div
+              id="ver-conteudo"
+              class="ver-conteudo"
+              role="tabpanel"
+              tabindex="0"
+            ></div>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <nav class="bottom-nav" aria-label="Navegação principal">
+      <a href="#/inicio" data-nav="inicio"
+        ><span data-app-icon="home"></span>Início</a
+      ><a href="#/aprender" data-nav="aprender"
+        ><span data-app-icon="learn"></span>Aprender</a
+      ><a href="#/laboratorio" data-nav="laboratorio"
+        ><span data-app-icon="lab"></span>Laboratório</a
+      ><a href="#/caderno" data-nav="caderno"
+        ><span data-app-icon="notebook"></span>Caderno</a
+      >
+    </nav>
+
+    <button
+      id="sheet-backdrop"
+      type="button"
+      class="sheet-backdrop"
+      aria-label="Fechar painel"
+      hidden
+    ></button>
+
+    <dialog
+      id="rename-dialog"
+      class="siab-dialog dialog-rename"
+      aria-labelledby="rename-title"
+    >
+      <form id="rename-form" novalidate>
+        <div class="dialog-heading">
+          <h2 id="rename-title">Renomear tubo</h2>
+          <button
+            type="button"
+            class="icon-btn"
+            data-close="rename-dialog"
+            aria-label="Fechar renomeação"
+          >
+            ×
+          </button>
+        </div>
+        <label class="field"
+          >Nome do tubo<input
+            id="new-name"
+            maxlength="40"
+            required
+            autocomplete="off"
+        /></label>
+        <p id="rename-error" class="form-error" role="alert" hidden></p>
+        <p class="field-hint">
+          Até 40 caracteres. O preparo e as leituras são preservados.
+        </p>
+        <div class="dialog-actions">
+          <button
+            type="button"
+            class="secondary-btn"
+            data-close="rename-dialog"
+          >
+            Cancelar</button
+          ><button type="submit" class="primary-btn">Salvar nome</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog
+      id="confirm-dialog"
+      class="siab-dialog dialog-confirm"
+      aria-labelledby="confirm-title"
+      aria-describedby="confirm-text"
+    >
+      <div class="dialog-heading">
+        <h2 id="confirm-title"></h2>
+        <button
+          type="button"
+          class="icon-btn"
+          data-close="confirm-dialog"
+          aria-label="Fechar confirmação"
+        >
+          ×
+        </button>
+      </div>
+      <p id="confirm-text"></p>
+      <div class="dialog-actions">
+        <button type="button" id="confirm-cancel" class="secondary-btn" data-close="confirm-dialog">
+          Cancelar</button
+        ><button type="button" id="confirm-extra" class="secondary-btn" hidden></button><button type="button" id="confirm-yes" class="primary-btn">
+          Confirmar
+        </button>
+      </div>
+    </dialog>
+
+    <dialog id="poe-dialog" class="siab-dialog" aria-labelledby="poe-title">
+      <div class="dialog-heading">
+        <h2 id="poe-title">Prever e gotejar</h2>
+        <button class="icon-btn" data-close="poe-dialog" aria-label="Fechar">
+          ×
+        </button>
+      </div>
+      <p id="poe-contexto"></p>
+      <form id="poe-form">
+        <label class="field"
+          >O que acontecerá com o pH?<select name="direcao">
+            <option>Aumenta</option>
+            <option>Diminui</option>
+            <option>Permanece</option>
+          </select></label
+        ><label class="field"
+          >Previsão aberta: o que você espera observar?<textarea
+            name="aberta"
+            rows="3"
+            maxlength="3000"
+          ></textarea></label
+        ><label class="field"
+          >Quantidade de gotas<input
+            name="gotas"
+            type="number"
+            min="1"
+            max="500"
+            value="1"
+            required /></label
+        ><button class="primary-btn">Gotejar e observar</button>
+      </form>
+      <form id="poe-resultado" hidden>
+        <div id="poe-comparacao"></div>
+        <label class="field"
+          >Explicação<textarea
+            id="poe-explicacao"
+            rows="4"
+            maxlength="6000"
+          ></textarea></label
+        ><label class="check-row"
+          ><input id="poe-registrar" type="checkbox" />Registrar no
+          Caderno</label
+        ><button class="primary-btn">Concluir</button>
+      </form>
+    </dialog>
+
+    <dialog id="app-drawer" class="drawer" aria-labelledby="drawer-title">
+      <div class="drawer-head">
+        <h2 id="drawer-title" class="drawer-title">Menu</h2>
+        <button
+          type="button"
+          class="drawer-close icon-btn"
+          data-close="app-drawer"
+          aria-label="Fechar menu"
+        >
+          ×
+        </button>
+      </div>
+      <div class="drawer-body">
+        <section class="drawer-section" id="activity-menu" hidden>
+          <h3 class="drawer-section-title">Atividade em andamento</h3>
+          <p id="drawer-activity-context"></p>
+          <button class="drawer-link quiet-btn" data-activity-about>
+            Sobre esta atividade
+          </button>
+          <button class="drawer-link" data-activity-help>Ajuda</button>
+          <button class="drawer-link" data-activity-report>Relatório</button>
+          <button class="drawer-link" data-activity-finish>
+            Finalizar atividade
+          </button>
+          <button class="drawer-link danger-btn" data-activity-exit>
+            Encerrar atividade
+          </button>
+        </section>
+        <section class="drawer-section drawer-now">
+          <h3 class="drawer-section-title">Agora</h3>
+          <strong id="drawer-now-title"></strong>
+          <p id="drawer-now-detail"></p>
+          <button class="quiet-btn" id="drawer-continue">Continuar</button>
+        </section>
+        <section class="drawer-section">
+          <button
+            type="button"
+            class="drawer-cat-expand drawer-link quiet-btn"
+            aria-controls="drawer-navigation"
+            aria-expanded="true"
+          >
+            <span data-app-icon="tour"></span>
+            <span class="drawer-link-label">Navegar</span>
+            <span data-app-icon="chevron" class="drawer-chevron"></span>
+          </button>
+          <nav id="drawer-navigation" aria-label="Todos os destinos">
+            <ul class="drawer-lista">
+              <li>
+                <a class="drawer-link" href="#/inicio" data-nav="inicio"
+                  ><span data-app-icon="home"></span><span>Início</span></a
+                >
+              </li>
+              <li>
+                <a class="drawer-link" href="#/aprender" data-nav="aprender"
+                  ><span data-app-icon="learn"></span><span>Aprender</span></a
+                >
+              </li>
+              <li>
+                <a class="drawer-link" href="#/missoes" data-nav="missoes"
+                  ><span data-app-icon="mission"></span><span>Missões</span></a
+                >
+              </li>
+              <li>
+                <a class="drawer-link" href="#/roteiros" data-nav="roteiros"
+                  ><span data-app-icon="protocol"></span
+                  ><span>Roteiros Experimentais</span></a
+                >
+              </li>
+              <li>
+                <a
+                  class="drawer-link"
+                  href="#/laboratorio"
+                  data-nav="laboratorio"
+                  ><span data-app-icon="lab"></span><span>Laboratório</span></a>
+              </li>
+              <li>
+                <a class="drawer-link" href="#/caderno" data-nav="caderno"
+                  ><span data-app-icon="notebook"></span><span>Caderno</span></a
+                >
+              </li>
+              <li>
+                <a class="drawer-link" href="#/manual" data-nav="manual"
+                  ><span data-app-icon="manual"></span><span>Manual</span></a>
+              </li>
+            </ul>
+          </nav>
+        </section>
+        <section class="drawer-section">
+          <h3 class="drawer-section-title">Recursos</h3>
+          <a class="drawer-link" href="#/montagens"
+            ><span data-app-icon="mount"></span>Montagens prontas</a
+          ><button class="drawer-link quiet-btn" id="drawer-tour">
+            <span data-app-icon="tour"></span>Tour da bancada
+          </button>
+        </section>
+        <section class="drawer-section">
+          <h3 class="drawer-section-title">Professor</h3>
+          <a class="drawer-link" href="#/professor"
+            ><span data-app-icon="professor"></span>Área do Professor</a
+          ><a class="drawer-link" href="#/manual/professor"
+            ><span data-app-icon="protocol"></span>Apoio pedagógico</a
+          ><button class="drawer-link quiet-btn" id="drawer-guia">
+            <span data-app-icon="accessibility"></span>Ideias para uma aula
+            acessível
+          </button>
+        </section>
+        <section class="drawer-section" aria-labelledby="drawer-preferencias">
+          <h3 class="drawer-section-title" id="drawer-preferencias">
+            Preferências
+          </h3>
+          <button
+            type="button"
+            id="a11y-toggle"
+            class="drawer-link drawer-cat-btn"
+            aria-expanded="false"
+            aria-controls="a11y-panel"
+          >
+            <span data-app-icon="accessibility"></span>
+            <span class="drawer-link-label">Acessibilidade</span>
+            <span data-app-icon="chevron" class="drawer-chevron"></span>
+          </button>
+          <div
+            id="a11y-panel"
+            class="a11y-panel"
+            role="group"
+            aria-labelledby="a11y-toggle"
+            hidden
+          >
+            <p class="a11y-panel-title">Aparência</p>
+            <label class="a11y-row">
+              <span class="a11y-row-label"
+                ><svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5Z" /></svg
+                ><span>Modo escuro</span></span
+              >
+              <span class="switch"
+                ><input type="checkbox" role="switch" id="tema-escuro" /><span
+                  class="track"
+                  aria-hidden="true"
+                  ><span class="thumb"></span></span
+              ></span>
+            </label>
+            <label class="a11y-row">
+              <span class="a11y-row-label"
+                ><svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18ZM12 3v18M12 7h7M12 11h9M12 15h8"
+                  /></svg
+                ><span>Alto contraste</span></span
+              >
+              <span class="switch"
+                ><input
+                  type="checkbox"
+                  role="switch"
+                  id="contraste-check" /><span class="track" aria-hidden="true"
+                  ><span class="thumb"></span></span
+              ></span>
+            </label>
+            <div class="a11y-row">
+              <span class="a11y-row-label" id="fonte-rotulo"
+                ><svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5 20 11 4h2l6 16M8 14h8" /></svg
+                ><span>Tamanho do texto</span></span
+              >
+              <span
+                class="fontstep"
+                role="group"
+                aria-labelledby="fonte-rotulo"
+              >
+                <button
+                  id="font-minus"
+                  type="button"
+                  class="fontstep-btn"
+                  aria-label="Diminuir texto"
+                >
+                  A−
+                </button>
+                <output id="font-output" aria-live="polite"></output>
+                <button
+                  id="font-plus"
+                  type="button"
+                  class="fontstep-btn"
+                  aria-label="Aumentar texto"
+                >
+                  A+
+                </button>
+              </span>
+            </div>
+            <label class="a11y-row">
+              <span class="a11y-row-label"
+                ><svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M3 12h18M6 9l-3 3 3 3M18 9l3 3-3 3" /></svg
+                ><span>Espaçamento de letras</span></span
+              >
+              <span class="switch"
+                ><input
+                  type="checkbox"
+                  role="switch"
+                  id="espacamento-check" /><span
+                  class="track"
+                  aria-hidden="true"
+                  ><span class="thumb"></span></span
+              ></span>
+            </label>
+            <label class="a11y-row">
+              <span class="a11y-row-label"
+                ><svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18ZM10 9v6M14 9v6"
+                  /></svg
+                ><span>Reduzir animações</span></span
+              >
+              <span class="switch"
+                ><input type="checkbox" role="switch" id="motion-check" /><span
+                  class="track"
+                  aria-hidden="true"
+                  ><span class="thumb"></span></span
+              ></span>
+            </label>
+            <label class="a11y-row">
+              <span class="a11y-row-label"
+                ><svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M10 4v8a4 4 0 0 0 8 0V4M8 4h12M10 9h8M4 17l2 2M4 11h2M5 6l1.5 1.5"
+                  /></svg
+                ><span
+                  >Animação de abertura<span class="a11y-row-dica"
+                    >Ao abrir ou recarregar</span
+                  ></span
+                ></span
+              >
+              <span class="switch"
+                ><input
+                  type="checkbox"
+                  role="switch"
+                  id="abertura-check" /><span class="track" aria-hidden="true"
+                  ><span class="thumb"></span></span
+              ></span>
+            </label>
+            <label class="a11y-row">
+              <span class="a11y-row-label"
+                ><svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M4 6h16M4 10h16M4 14h10M4 18h7" /></svg
+                ><span
+                  >Leitura simples<span class="a11y-row-dica"
+                    >Texto maior e cores mais firmes</span
+                  ></span
+                ></span
+              >
+              <span class="switch"
+                ><input type="checkbox" role="switch" id="leitura-check" /><span
+                  class="track"
+                  aria-hidden="true"
+                  ><span class="thumb"></span></span
+              ></span>
+            </label>
+            <p class="a11y-panel-title">Visão de cores</p>
+            <div class="a11y-row a11y-row-select">
+              <span class="a11y-row-label"
+                ><svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12ZM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
+                  /></svg
+                ><span>Simular daltonismo</span></span
+              >
+              <select id="cvd-select" data-label="Simular daltonismo">
+                <option value="none">Nenhum</option>
+                <option value="protanopia">Protanopia</option>
+                <option value="deuteranopia">Deuteranopia</option>
+                <option value="tritanopia">Tritanopia</option>
+                <option value="acromatopsia">Acromatopsia</option>
+              </select>
+            </div>
+            <p class="a11y-dica">
+              Os filtros simulam diferenças de percepção; não corrigem o
+              daltonismo. A cor de cada tubo também é descrita em texto.
+            </p>
+            <p class="a11y-panel-title">Som e toque</p>
+            <label class="a11y-row">
+              <span class="a11y-row-label"
+                ><svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M4 9v6h4l5 4V5L8 9H4ZM16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"
+                  /></svg
+                ><span
+                  >Som do pH<span class="a11y-row-dica"
+                    >Tom mais agudo quanto maior o pH</span
+                  ></span
+                ></span
+              >
+              <span class="switch"
+                ><input type="checkbox" role="switch" id="sound-check" /><span
+                  class="track"
+                  aria-hidden="true"
+                  ><span class="thumb"></span></span
+              ></span>
+            </label>
+            <label class="a11y-row">
+              <span class="a11y-row-label"
+                ><svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M8 4h8a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1ZM3 9v6M21 9v6"
+                  /></svg
+                ><span
+                  >Vibrar na viragem<span class="a11y-row-dica"
+                    >Em celulares compatíveis</span
+                  ></span
+                ></span
+              >
+              <span class="switch"
+                ><input type="checkbox" role="switch" id="vibrate-check" /><span
+                  class="track"
+                  aria-hidden="true"
+                  ><span class="thumb"></span></span
+              ></span>
+            </label>
+            <p class="a11y-panel-title">Outros recursos</p>
+            <label class="a11y-row">
+              <span class="a11y-row-label"
+                ><svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M8 13V5.5a1.5 1.5 0 0 1 3 0V11m0-6.5a1.5 1.5 0 0 1 3 0V11m0-4.5a1.5 1.5 0 0 1 3 0V14a7 7 0 0 1-7 7h-1a6 6 0 0 1-5-2.7L3.3 15a1.5 1.5 0 0 1 2.5-1.7L8 16"
+                  /></svg
+                ><span
+                  >Tradutor de Libras (VLibras)<span class="a11y-row-dica"
+                    >Precisa de internet</span
+                  ></span
+                ></span
+              >
+              <span class="switch"
+                ><input type="checkbox" role="switch" id="libras-check" /><span
+                  class="track"
+                  aria-hidden="true"
+                  ><span class="thumb"></span></span
+              ></span>
+            </label>
+            <button
+              type="button"
+              id="a11y-restaurar"
+              class="quiet-btn a11y-restaurar"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 12a8 8 0 1 0 2.3-5.7M4 4v4h4" /></svg
+              >Restaurar padrões
+            </button>
+          </div>
+          <div data-unrestricted-menu>
+            <button class="drawer-link quiet-btn" data-startup-settings>
+              <span data-app-icon="home"></span>Tela inicial
+            </button>
+            <label class="drawer-link"
+              ><span data-app-icon="projector"></span
+              ><span>Apresentação · Modo projetor</span
+              ><input
+                type="checkbox"
+                id="drawer-projector"
+                aria-label="Modo projetor"
+            /></label>
+            <a href="#/manual/projetor" class="drawer-link"
+              ><span data-app-icon="manual"></span>Como apresentar à turma</a
+            >
+          </div>
+        </section>
+        <section class="drawer-section">
+          <h3 class="drawer-section-title" id="drawer-app">Aplicativo</h3>
+          <button class="drawer-link quiet-btn" id="drawer-install" hidden>
+            <span data-app-icon="install"></span>Instalar app</button
+          ><button class="drawer-link quiet-btn" id="about-btn">
+            <span data-app-icon="about"></span>Sobre o SIAB
+          </button>
+          <p class="drawer-versao">Versão <span id="drawer-versao"></span></p>
+        </section>
+      </div>
+    </dialog>
+
+    <dialog
+      id="about-dialog"
+      class="siab-dialog dialog-about"
+      aria-labelledby="about-title"
+    >
+      <div class="dialog-heading">
+        <h2 id="about-title">Sobre o SIAB</h2>
+        <button
+          type="button"
+          class="icon-btn"
+          data-close="about-dialog"
+          aria-label="Fechar informações"
+        >
+          ×
+        </button>
+      </div>
+      <p><strong>Simulador Interativo de Ácidos e Bases</strong></p>
+      <p>
+        Uma bancada virtual para investigar soluções, observar transformações e
+        interpretar evidências.
+      </p>
+      <p>Versão <span id="about-version"></span></p>
+      <p>
+        SIAB · GNU GPL v3. Interface de diálogos com dialog-polyfill,
+        BSD-3-Clause.
+      </p>
+      <nav class="about-links" aria-label="Documentação">
+        <a class="quiet-btn" href="#/manual" data-close="about-dialog">Manual de uso</a
+        ><a class="quiet-btn" href="#/manual/limites" data-close="about-dialog"
+          >Modelo científico</a
+        ><a class="quiet-btn" href="#/manual/referencias" data-close="about-dialog"
+          >Referências e créditos</a
+        >
+      </nav>
+    </dialog>
+
+    <dialog
+      id="guide-dialog"
+      class="siab-dialog dialog-guide"
+      aria-labelledby="guide-title"
+    >
+      <div class="dialog-heading">
+        <div>
+          <p class="dialog-kicker">DO VIRTUAL À SALA DE AULA</p>
+          <h2 id="guide-title">Química com o que temos</h2>
+        </div>
+        <button
+          type="button"
+          class="icon-btn"
+          data-close="guide-dialog"
+          aria-label="Fechar ideias para a aula"
+        >
+          ×
+        </button>
+      </div>
+      <p>
+        Explore primeiro no simulador e escolha poucas amostras para a
+        experiência presencial. Uma fruta, água, vinagre e bicarbonato já
+        permitem comparar resultados.
+      </p>
+      <ol class="activity-list">
+        <li>
+          <strong>Prever antes de observar</strong>
+          <p>
+            Use “Prever e gotejar”. A previsão e a explicação vão para o
+            caderno.
+          </p>
+        </li>
+        <li>
+          <strong>Uma amostra, diferentes leituras</strong>
+          <p>
+            Use “Comparar indicadores” para observar a mesma preparação com três
+            indicadores.
+          </p>
+        </li>
+        <li>
+          <strong>O que a água muda?</strong>
+          <p>
+            No módulo Medir, compare a mesma amostra como preparada e diluída.
+            pH e quantidade de ácido não são a mesma coisa.
+          </p>
+        </li>
+        <li>
+          <strong>Nem toda cor é do indicador</strong>
+          <p>
+            Teste café ou suco de morango. Alterne “Realçar indicador” para
+            discutir como pigmentos podem encobrir a viragem.
+          </p>
+        </li>
+      </ol>
+      <div class="guide-note">
+        <strong>Indicador de baixo custo</strong>
+        <p>
+          Folhas de repolho roxo amassadas em água liberam pigmentos
+          indicadores. Sob orientação do professor, use porções pequenas e teste
+          cada amostra em um recipiente limpo. Não consuma materiais usados no
+          experimento nem misture produtos de limpeza.
+        </p>
+      </div>
+      <p class="small">
+        Os valores do simulador são referências didáticas. Na prática, preparo,
+        diluição, marca, maturação e quantidade de indicador afetam o resultado.
+      </p>
+      <div class="dialog-actions">
+        <button type="button" class="primary-btn" data-close="guide-dialog">
+          Voltar à bancada
+        </button>
+      </div>
+    </dialog>
+
+    <dialog
+      id="choice-dialog"
+      class="siab-dialog dialog-choice"
+      aria-labelledby="choice-title"
+    >
+      <div class="dialog-heading">
+        <div>
+          <p class="dialog-kicker">ESCOLHER</p>
+          <h2 id="choice-title"></h2>
+        </div>
+        <button
+          type="button"
+          class="icon-btn"
+          data-close="choice-dialog"
+          aria-label="Fechar seleção"
+        >
+          ×
+        </button>
+      </div>
+      <label class="field choice-search" id="choice-search-field"
+        >Buscar opção<input
+          id="choice-search"
+          type="text"
+          autocomplete="off"
+          placeholder="Digite um nome…"
+      /></label>
+      <p id="choice-count" class="small" aria-live="polite"></p>
+      <div
+        id="choice-options"
+        class="choice-options"
+        role="listbox"
+        tabindex="0"
+        aria-labelledby="choice-title"
+      ></div>
+      <p id="choice-empty" class="empty-choice" hidden>
+        Nenhum resultado. Tente outro nome.
+      </p>
+      <div class="dialog-actions">
+        <button type="button" class="secondary-btn" data-close="choice-dialog">
+          Cancelar
+        </button>
+      </div>
+    </dialog>
+
+    <dialog id="tour" class="tour" aria-labelledby="tour-titulo">
+      <div class="tour-anel" aria-hidden="true"></div>
+      <div class="tour-cartao">
+        <div id="tour-conteudo" aria-live="polite">
+          <p class="tour-passo eyebrow" id="tour-passo"></p>
+          <h2 id="tour-titulo"></h2>
+          <p id="tour-texto"></p>
+        </div>
+        <div class="tour-pontos" id="tour-pontos" aria-hidden="true"></div>
+        <div class="tour-acoes">
+          <button type="button" class="quiet-btn" id="tour-pular">
+            Pular tour
+          </button>
+          <button type="button" class="secondary-btn back-btn" id="tour-voltar">
+            Voltar
+          </button>
+          <button type="button" class="primary-btn" id="tour-proximo">
+            Próximo
+          </button>
+        </div>
+      </div>
+    </dialog>
+
+    <div
+      id="roteiro-impressao"
+      class="roteiro-impressao"
+      aria-hidden="true"
+    ></div>
+    <!-- Folha de impressão da bancada (js/ui/impressao.js): só aparece no papel. -->
+    <div id="folha-impressao" class="folha" aria-hidden="true"></div>
+    <div id="toast" role="status" aria-live="polite" hidden></div>
+    <div
+      id="announcer"
+      class="sr-only"
+      aria-live="polite"
+      aria-atomic="true"
+    ></div>
+
+    <dialog
+      id="startup-dialog"
+      class="siab-dialog"
+      aria-labelledby="startup-title"
+      aria-describedby="startup-description"
+    >
+      <div class="startup-brand" aria-hidden="true">
+        <img src="assets/siab-icone.svg" alt="" width="208" height="208" />
+        <div><strong>SIAB</strong><span>A química das cores</span></div>
+      </div>
+      <div class="startup-panel">
+        <div class="startup-topo">
+          <span class="eyebrow">SEU PONTO DE PARTIDA</span>
+          <button
+            class="icon-btn"
+            data-close="startup-dialog"
+            aria-label="Fechar configurações de inicialização"
+          >
+            <span data-app-icon="close"></span>
+          </button>
+        </div>
+        <h2 id="startup-title" tabindex="-1" autofocus>Como deseja iniciar?</h2>
+        <p id="startup-description">
+          Escolha a tela que vai receber você ao abrir o SIAB.
+        </p>
+        <div class="startup-opcoes">
+          <button class="startup-opcao" data-startup="inicio">
+            <span class="startup-opcao-icone"
+              ><svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="3" y="3" width="7" height="7" rx="1" />
+                <rect x="14" y="3" width="7" height="7" rx="1" />
+                <rect x="3" y="14" width="7" height="7" rx="1" />
+                <rect x="14" y="14" width="7" height="7" rx="1" /></svg
+            ></span>
+            <span
+              ><strong>Página inicial</strong
+              ><small>Explore temas, missões e roteiros.</small></span
+            >
+            <svg class="startup-seta" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m9 5 7 7-7 7" />
+            </svg>
+          </button>
+          <button class="startup-opcao" data-startup="laboratorio">
+            <span class="startup-opcao-icone"
+              ><span data-app-icon="lab"></span
+            ></span>
+            <span
+              ><strong>Laboratório</strong
+              ><small>Vá direto para sua bancada livre.</small></span
+            >
+            <svg class="startup-seta" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m9 5 7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+        <p class="startup-ajuda">
+          Sua escolha fica salva. Você pode alterá-la nas configurações de
+          inicialização.
+        </p>
+        <div class="startup-rodape">
+          <button class="quiet-btn" data-startup="reset">
+            Redefinir preferência
+          </button>
+          <button class="quiet-btn" data-close="startup-dialog">
+            Agora não
+          </button>
+        </div>
+      </div>
+    </dialog>
+    <dialog
+      id="teacher-guide-dialog"
+      class="siab-dialog wide-dialog"
+      aria-labelledby="teacher-guide-title"
+    >
+      <div class="dialog-heading">
+        <h2 id="teacher-guide-title">Orientações do Professor</h2>
+        <button
+          class="icon-btn"
+          data-close="teacher-guide-dialog"
+          aria-label="Fechar orientações"
+        >
+          ×
+        </button>
+      </div>
+      <p class="field-hint">
+        Material de apoio do professor. As respostas não integram a apresentação
+        do aluno.
+      </p>
+      <div id="prof-guide-content"></div>
+      <button class="secondary-btn" data-close="teacher-guide-dialog">
+        Fechar
+      </button>
+    </dialog>
+    <dialog
+      id="activity-help-dialog"
+      class="siab-dialog"
+      aria-labelledby="activity-help-title"
+    >
+      <div class="dialog-heading">
+        <h2 id="activity-help-title">Ajuda da investigação</h2>
+        <button
+          class="icon-btn"
+          data-close="activity-help-dialog"
+          aria-label="Fechar ajuda"
+        >
+          ×
+        </button>
+      </div>
+      <div id="activity-help-content"></div>
+      <button class="secondary-btn" data-close="activity-help-dialog">
+        Voltar à atividade
+      </button>
+    </dialog>
+    <dialog
+      id="comparacao-dialog"
+      class="siab-dialog wide-dialog"
+      aria-labelledby="comparacao-title"
+    >
+      <h2 id="comparacao-title">Comparar recipientes</h2>
+      <div id="comparacao-corpo"></div>
+      <button class="secondary-btn" data-close="comparacao-dialog">
+        Fechar
+      </button>
+    </dialog>
+    <dialog
+      id="mistura-destino-dialog"
+      class="siab-dialog"
+      aria-labelledby="mistura-title"
+    >
+      <h2 id="mistura-title">Misturar recipientes</h2>
+      <p>
+        Todo o conteúdo selecionado será combinado com o conteúdo do destino. As
+        origens ficarão vazias.
+      </p>
+      <form id="mistura-destino-form">
+        <label class="field"
+          >Destino<select id="mistura-destino-select"></select
+        ></label>
+        <p id="mistura-erro" role="alert"></p>
+        <button class="primary-btn">Misturar</button
+        ><button
+          type="button"
+          class="quiet-btn"
+          data-close="mistura-destino-dialog"
+        >
+          Cancelar
+        </button>
+      </form>
+    </dialog>
+    <script src="vendor/dialog-polyfill/dialog-polyfill.js?v=1.0.0+20261012"></script>
+    <script src="js/core/namespace.js?v=1.0.0+20261012"></script>
+    <script src="js/ui/icons.js?v=1.0.0+20261012"></script>
+    <script src="js/core/util.js?v=1.0.0+20261012"></script>
+    <script src="js/data/catalogo.js?v=1.0.0+20261012"></script>
+    <script src="js/data/cotidiano.js?v=1.0.0+20261012"></script>
+    <script src="js/data/sais.js?v=1.0.0+20261012"></script>
+    <script src="js/data/ambiente-saude.js?v=1.0.0+20261012"></script>
+    <script src="js/data/reagentes.js?v=1.0.0+20261012"></script>
+    <script src="js/data/amostras.js?v=1.0.0+20261012"></script>
+    <script src="js/data/funcoes.js?v=1.0.0+20261012"></script>
+    <script src="js/simulation/quimica.js?v=1.0.0+20261012"></script>
+    <script src="js/simulation/condutividade.js?v=1.0.0+20261012"></script>
+    <script src="js/core/estado.js?v=1.0.0+20261012"></script>
+    <script src="js/ui/abertura.js?v=1.0.0+20261012"></script>
+    <script src="js/core/loja.js?v=1.0.0+20261012"></script>
+    <script src="js/core/persistencia.js?v=1.0.0+20261012"></script>
+    <script src="js/core/migracoes.js?v=1.0.0+20261012"></script>
+    <script src="js/core/progresso.js?v=1.0.0+20261012"></script>
+    <script src="js/core/roteador.js?v=1.0.0+20261012"></script>
+    <script src="js/data/missoes.js?v=1.0.0+20261012"></script>
+    <script src="js/data/temas.js?v=1.0.0+20261012"></script>
+    <script src="js/data/montagens.js?v=1.0.0+20261012"></script>
+    <script src="js/data/experimentos.js?v=1.0.0+20261012"></script>
+    <script src="js/data/manual.js?v=1.0.0+20261012"></script>
+    <script src="js/core/activity-context.js?v=1.0.0+20261012"></script>
+    <script src="js/simulation/motor-missoes.js?v=1.0.0+20261012"></script>
+    <script src="js/ui/tubo.js?v=1.0.0+20261012"></script>
+    <script src="js/ui/regua-ph.js?v=1.0.0+20261012"></script>
+    <script src="js/ui/grafico.js?v=1.0.0+20261012"></script>
+    <script src="js/ui/lupa.js?v=1.0.0+20261012"></script>
+    <script src="js/ui/condutimetro.js?v=1.0.0+20261012"></script>
+    <script src="js/ui/equacao.js?v=1.0.0+20261012"></script>
+    <script src="js/ui/som.js?v=1.0.0+20261012"></script>
+    <script src="js/ui/conta-gotas.js?v=1.0.0+20261012"></script>
+    <script src="js/ui/seletores.js?v=1.0.0+20261012"></script>
+    <script src="js/ui/prateleira.js?v=1.0.0+20261012"></script>
+    <script src="js/ui/modulos.js?v=1.0.0+20261012"></script>
+    <script src="js/ui/layout-bancada.js?v=1.0.0+20261012"></script>
+    <script src="js/simulation/instrumentos.js?v=1.0.0+20261012"></script>
+    <script src="js/ui/render.js?v=1.0.0+20261012"></script>
+    <script src="js/simulation/medicoes.js?v=1.0.0+20261012"></script>
+    <script src="js/ui/ver-investigacao.js?v=1.0.0+20261012"></script>
+    <script src="js/ui/gaveta.js?v=1.0.0+20261012"></script>
+    <script src="js/ui/workspace.js?v=1.0.0+20261012"></script>
+    <script src="js/ui/trilho.js?v=1.0.0+20261012"></script>
+    <script src="js/ui/tour.js?v=1.0.0+20261012"></script>
+    <script src="js/ui/segredo.js?v=1.0.0+20261012"></script>
+    <script src="js/ui/impressao.js?v=1.0.0+20261012"></script>
+    <script src="js/ui/selecao-tubos.js?v=1.0.0+20261012"></script>
+    <script src="js/telas/bancada.js?v=1.0.0+20261012"></script>
+    <script src="js/telas/laboratorio.js?v=1.0.0+20261012"></script>
+    <script src="js/telas/missao.js?v=1.0.0+20261012"></script>
+    <script src="js/telas/inicio.js?v=1.0.0+20261012"></script>
+    <script src="js/telas/aprender.js?v=1.0.0+20261012"></script>
+    <script src="js/telas/roteiros.js?v=1.0.0+20261012"></script>
+    <script src="js/telas/relatorios.js?v=1.0.0+20261012"></script>
+    <script src="js/core/atividades.js?v=1.0.0+20261012"></script>
+    <script src="js/telas/professor.js?v=1.0.0+20261012"></script>
+    <script src="js/telas/caderno.js?v=1.0.0+20261012"></script>
+    <script src="js/telas/manual.js?v=1.0.0+20261012"></script>
+    <script src="js/a11y/preferencias.js?v=1.0.0+20261012"></script>
+    <script src="js/init/pwa.js?v=1.0.0+20261012"></script>
+    <script src="js/ui/activity-ui.js?v=1.0.0+20261012"></script>
+    <script src="js/init/integracao.js?v=1.0.0+20261012"></script>
+    <script src="js/init/app.js?v=1.0.0+20261012"></script>
+    <script src="js/ui/mobile-study.js?v=1.0.0+20261012"></script>
+    <script>
+      if (window.SIABCompat) window.SIABCompat.concluir();
+    </script>
+  </body>
+</html>

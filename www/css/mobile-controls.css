@@ -1,0 +1,146 @@
+/* RC.4.1 — contrato visual mobile. Apenas dimensões e espaçamento:
+   workspace.js continua responsável por navegação, painéis e foco. */
+@media screen and (max-width: 900px) {
+  :root[data-mobile-study="on"] {
+    --mobile-target: 44px;
+    --mobile-sheet-action: 48px;
+    --mobile-control-gap: 8px;
+  }
+
+  /* Inclui controles inseridos dinamicamente. Não alcança desenhos,
+     amostras de cor, badges ou indicadores meramente decorativos. */
+  :root[data-mobile-study="on"] body :is(button, summary),
+  :root[data-mobile-study="on"]
+    body
+    :is(.chip, .segmented label, .capacidade-opcoes label, .opcoes-tubo .opcao),
+  :root[data-mobile-study="on"]
+    body
+    :is(input:not([type="checkbox"], [type="radio"]), select, textarea) {
+    min-height: var(--mobile-target);
+  }
+
+  :root[data-mobile-study="on"] body button {
+    min-width: var(--mobile-target);
+    max-width: 100%;
+  }
+  :root[data-mobile-study="on"] .header-brand,
+  :root[data-mobile-study="on"] .manual-map-actions a,
+  :root[data-mobile-study="on"] .manual-shortcuts a,
+  :root[data-mobile-study="on"] .dock .field-hint a[href] {
+    min-height: var(--mobile-target);
+  }
+  :root[data-mobile-study="on"] .dock .field-hint a[href] {
+    display: inline-flex;
+    align-items: center;
+    padding-inline: 4px;
+  }
+  :root[data-mobile-study="on"] .manual-article a[href]:not([class]) {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--mobile-target);
+    vertical-align: middle;
+  }
+  :root[data-mobile-study="on"] .manual-search-field > button[type="submit"] {
+    flex: none;
+  }
+  :root[data-mobile-study="on"] body summary {
+    align-items: center;
+  }
+
+  /* Ícone pequeno, alvo de toque completo. */
+  :root[data-mobile-study="on"]
+    body
+    :is(
+      .icon-btn,
+      .olho-btn,
+      .ajuda-link,
+      .fontstep-btn,
+      .menu-btn,
+      .drawer-close
+    ) {
+    width: var(--mobile-target);
+    height: var(--mobile-target);
+    min-width: var(--mobile-target);
+    min-height: var(--mobile-target);
+    padding: 0;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+  }
+  :root[data-mobile-study="on"] .dose-info .ajuda-link {
+    margin: 0;
+  }
+
+  :root[data-mobile-study="on"] .chip-list {
+    gap: var(--mobile-control-gap);
+    align-items: stretch;
+  }
+  :root[data-mobile-study="on"] .chip {
+    padding: 8px 12px;
+    max-width: 100%;
+    flex-shrink: 0;
+    line-height: 1.3;
+  }
+  :root[data-mobile-study="on"] .chip-cor {
+    flex: none;
+  }
+  :root[data-mobile-study="on"] .opcoes-tubo {
+    gap: var(--mobile-control-gap);
+  }
+  :root[data-mobile-study="on"] .opcoes-tubo .opcao {
+    flex: 1 1 110px;
+    min-width: 0;
+    padding: 8px 12px;
+  }
+  :root[data-mobile-study="on"] .overview-heading-actions > button {
+    border-radius: 6px;
+    padding: 8px 10px;
+    line-height: 1.3;
+  }
+
+  :root[data-mobile-study="on"] .ver-acoes,
+  :root[data-mobile-study="on"] .grafico-modos {
+    gap: var(--mobile-control-gap);
+    align-items: stretch;
+    flex-wrap: wrap;
+  }
+  :root[data-mobile-study="on"] .ver-acoes > button,
+  :root[data-mobile-study="on"] .grafico-modos > button {
+    flex: 1 1 112px;
+    min-width: 0;
+    padding: 8px 10px;
+    justify-content: center;
+    line-height: 1.3;
+  }
+
+  /* Ações que ocupam uma linha do bottom sheet. Famílias e ferramentas
+     mantêm seus cards de seleção de 52 px em workspace.css. */
+  :root[data-mobile-study="on"]
+    .dock
+    :is(.full-width, .dock-data-menu > button),
+  :root[data-mobile-study="on"] .dock .panel-actions > button,
+  :root[data-mobile-study="on"]
+    .dock
+    .ver-conteudo
+    > .instrument-section
+    > button {
+    min-height: var(--mobile-sheet-action);
+  }
+  :root[data-mobile-study="on"] .dock .panel-actions {
+    gap: var(--mobile-control-gap);
+  }
+
+  /* O desenho do checkbox/switch permanece pequeno; o label inteiro
+     aciona o controle e oferece a área mínima de toque. */
+  :root[data-mobile-study="on"] .check-row,
+  :root[data-mobile-study="on"] .overview-link-options label {
+    min-height: var(--mobile-target);
+  }
+}
+
+@media screen and (max-width: 370px) {
+  :root[data-mobile-study="on"] .workspace-launchers > button {
+    gap: 4px;
+    padding-inline: 5px;
+  }
+}

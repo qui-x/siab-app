@@ -1,0 +1,145 @@
+/* Complementos de leitura em telas compactas. A bancada RC.3 é apresentada
+   por workspace.css; páginas de conteúdo conservam os componentes maduros. */
+.mobile-study-control { display: none; }
+@media screen and (max-width: 900px) {
+  :root[data-mobile-study=on] .mobile-study-control { display: inline-flex; }
+  :root[data-mobile-study=on] { --bottom-h: calc(58px + env(safe-area-inset-bottom)); }
+  :root[data-mobile-study=on] .app-header { padding-block: 5px; padding-top: calc(5px + env(safe-area-inset-top)); gap: 7px; }
+  :root[data-mobile-study=on] .header-brand { gap: 7px; min-width: 0; }
+  :root[data-mobile-study=on] .header-brand span { font-size: .63rem; }
+  :root[data-mobile-study=on] .bottom-nav a { min-height: 50px; }
+  :root[data-mobile-study=on] .bottom-nav a svg { width: 20px; height: 20px; }
+  :root[data-mobile-study=on] .view-tabs {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; padding: 6px 12px;
+    overflow: visible; min-height: 56px;
+  }
+  :root[data-mobile-study=on] .view-tabs > button { min-width: 0; width: 100%; min-height: 44px; padding: 6px 4px; font-size: .8rem; white-space: normal; overflow-wrap: anywhere; }
+  :root[data-mobile-study=on][data-modo=completo] .bottom-nav [data-nav=inicio],
+  :root[data-mobile-study=on][data-modo=completo] .bottom-nav [data-nav=desafios],
+  :root[data-mobile-study=on][data-modo=completo] .bottom-nav [data-nav=manual] { display: none; }
+  :root[data-mobile-study=on] .view-tabs .chip-ver,
+  :root[data-mobile-study=on] .view-tabs .chip-sep,
+  :root[data-mobile-study=on] .view-tabs-mode { display: none !important; }
+  :root[data-mobile-study=on] .workspace.sem-ver .view-tabs,
+  :root[data-mobile-study=on] .workspace.vazia .view-tabs { grid-template-columns: 1fr 1fr; }
+  :root[data-mobile-study=on] .ver-cabecalho { flex-wrap: wrap; }
+  :root[data-mobile-study=on] .ver-tabs { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 6px; }
+  :root[data-mobile-study=on] .ver-tabs button { min-height: 44px; font-size: .78rem; }
+  :root[data-mobile-study=on] .ver-regua { margin-bottom: 10px; }
+  :root[data-mobile-study=on]:not([data-mobile-scale=on]) #ver-regua { display: none; }
+  :root[data-mobile-study=on] .grafico-modos { flex-wrap: wrap; }
+  :root[data-mobile-study=on] .grafico-modos button { min-height: 44px; }
+  :root[data-mobile-study=on] .focus-view { padding: 10px 14px 6px; }
+  :root[data-mobile-study=on] .focus-heading h1 { font-size: 1.08rem; }
+  :root[data-mobile-study=on] .resumo-linha { font-size: .77rem; }
+  :root[data-mobile-study=on] .focus-view .tube-stage {
+    min-height: 0; display: grid; grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto var(--mobile-glass-height, 240px); gap: 4px 12px; margin-top: 8px;
+  }
+  :root[data-mobile-study=on] .focus-view .stage-stats { grid-column: 1; grid-row: 1; max-width: none; }
+  :root[data-mobile-study=on] .focus-view .volume-readout { grid-column: 2; grid-row: 1; justify-self: end; }
+  :root[data-mobile-study=on] .focus-view .large-tube { grid-column: 1 / -1; grid-row: 2; min-height: 0; }
+  :root[data-mobile-study=on] .ph-readout strong { font-size: 1.6rem; }
+  :root[data-mobile-study=on] .ph-rotulo .eyebrow,
+  :root[data-mobile-study=on] .volume-readout .eyebrow { font-size: .68rem; }
+  :root[data-mobile-study=on] .volume-readout strong { font-size: 1.15rem; }
+  :root[data-mobile-study=on] .color-reading { flex-wrap: wrap; gap: 5px; padding: 4px 0; }
+  :root[data-mobile-study=on] .color-reading .small { font-size: .73rem; }
+  :root[data-mobile-study=on] .tube-strip { padding: 5px 10px; gap: 6px; }
+  :root[data-mobile-study=on] .tube-list button { min-height: 44px; padding: 5px 8px; }
+  :root[data-mobile-study=on] .tube-list .mini-tube { width: 10px; height: 24px; }
+  :root[data-mobile-study=on] .strip-add { min-height: 44px; padding: 6px 8px; font-size: .72rem; }
+  :root[data-mobile-study=on] .workspace:not(.vazia) .dose-area { padding: 6px 12px 8px; box-shadow: 0 -3px 12px #0002; }
+  :root[data-mobile-study=on] .dose-info { gap: 3px 7px; font-size: .7rem; margin-bottom: 4px; }
+  :root[data-mobile-study=on] .dose-info .ajuda-link { width: 44px; height: 44px; min-width: 44px; }
+  :root[data-mobile-study=on] .dose-barra { gap: 6px; }
+  :root[data-mobile-study=on] #dose-area .dose-actions { flex-basis: 100%; gap: 6px; }
+  :root[data-mobile-study=on] #dose-area .dose-actions button { min-height: 44px; padding: 6px; }
+  :root[data-mobile-study=on] #dose-area .dose-actions #undo-btn span { display: none; }
+  :root[data-mobile-study=on] #dose-area .dose-actions #drop-btn { font-size: .82rem; white-space: normal; }
+  :root[data-mobile-study=on] #mobile-doses-toggle { align-items: center; justify-content: center; font-size: .75rem; }
+  :root[data-mobile-study=on]:not([data-mobile-doses=on]) .dose-shortcuts { display: none; }
+  :root[data-mobile-study=on][data-mobile-doses=on] .dose-shortcuts { display: flex; width: 100%; flex-wrap: wrap; }
+  :root[data-mobile-study=on] .dose-shortcuts .secondary-btn { min-height: 44px; min-width: 72px; }
+  :root[data-mobile-study=on] .controls {
+    max-height: min(88dvh, calc(var(--mobile-visible-height, 100dvh) - 8px)); padding: 0 14px max(18px, env(safe-area-inset-bottom));
+  }
+  :root[data-mobile-study=on] .sheet-handle { margin-top: 8px; }
+  :root[data-mobile-study=on] .controls-heading {
+    position: sticky; top: 0; z-index: 3; min-height: 48px; background: var(--panel); margin: 0; padding: 4px 0;
+  }
+  :root[data-mobile-study=on] .overview-view { padding: 12px; }
+  :root[data-mobile-study=on] .overview-heading h1 { font-size: 1.1rem; }
+  :root[data-mobile-study=on] .overview-heading-actions { margin-top: 6px; gap: 6px; }
+  :root[data-mobile-study=on] .overview-heading-actions > button { flex: 1 1 90px; padding: 6px; min-height: 44px; font-size: .73rem; justify-content: center; align-items: center; }
+  :root[data-mobile-study=on] #overview-hint { font-size: .77rem; margin: 8px 0 12px; }
+  :root[data-mobile-study=on]:not([data-mobile-cards=grade]) .overview-grid,
+  :root[data-mobile-study=on] .overview-grid.selecting { grid-template-columns: minmax(0,1fr); }
+  :root[data-mobile-study=on]:not([data-mobile-cards=grade]) .overview-tube,
+  :root[data-mobile-study=on] .overview-grid.selecting .overview-tube {
+    display: grid; grid-template-columns: 26px 66px minmax(0,1fr); gap: 10px;
+    align-items: center; text-align: left; padding: 10px; min-height: 128px;
+  }
+  :root[data-mobile-study=on]:not([data-mobile-cards=grade]) .overview-tube[aria-pressed=true],
+  :root[data-mobile-study=on] .overview-grid.selecting .overview-tube[aria-pressed=true] { padding: 9px; }
+  :root[data-mobile-study=on]:not([data-mobile-cards=grade]) .overview-num { position: static; grid-column: 1; grid-row: 1; text-align: center; }
+  :root[data-mobile-study=on]:not([data-mobile-cards=grade]) .overview-visual,
+  :root[data-mobile-study=on] .overview-grid.selecting .overview-visual { grid-column: 2; grid-row: 1; width: 66px; height: 108px; }
+  :root[data-mobile-study=on]:not([data-mobile-cards=grade]) .overview-visual .tube-svg,
+  :root[data-mobile-study=on] .overview-grid.selecting .overview-visual .tube-svg { width: 100%; height: 100%; }
+  :root[data-mobile-study=on]:not([data-mobile-cards=grade]) .overview-details,
+  :root[data-mobile-study=on] .overview-grid.selecting .overview-details { grid-column: 3; grid-row: 1; }
+  :root[data-mobile-study=on] .overview-grid.selecting .overview-check { grid-column: 1; grid-row: 1; }
+  :root[data-mobile-study=on]:not([data-mobile-cards=grade]) .overview-color,
+  :root[data-mobile-study=on]:not([data-mobile-cards=grade]) .overview-readout { justify-content: flex-start; flex-wrap: wrap; }
+  :root[data-mobile-study=on] .overview-selection { padding: 8px 12px; max-height: 42dvh; }
+  :root[data-mobile-study=on] .overview-selection-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  :root[data-mobile-study=on] .overview-selection-actions > button { min-height: 44px; font-size: .75rem; padding: 6px; }
+  :root[data-mobile-study=on] #selecao-cancelar-btn { grid-column: 1 / -1; }
+  :root[data-mobile-study=on] .overview-link-hint { font-size: .75rem; }
+  :root[data-mobile-study=on] .workspace.overview:not(.selecting-tubes) { padding-bottom: 0; }
+  :root[data-mobile-study=on] .tela { padding: 16px 12px 24px; }
+  :root[data-mobile-study=on] .tela-cabecalho { margin-bottom: 14px; }
+  :root[data-mobile-study=on] .tela-cabecalho h1 { font-size: 1.4rem; }
+  :root[data-mobile-study=on] .tela-cabecalho > p:not(.eyebrow) { font-size: .86rem; }
+  :root[data-mobile-study=on] .caderno-acoes { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  :root[data-mobile-study=on] .caderno-acoes button { min-height: 44px; padding: 6px; font-size: .77rem; }
+  :root[data-mobile-study=on] #caderno-limpar { grid-column: 1 / -1; }
+  :root[data-mobile-study=on] .detetive-grade { grid-template-columns: 88px minmax(0,1fr); gap: 10px; }
+  :root[data-mobile-study=on] .detetive-tubo .tube-svg { height: 155px; width: 100%; }
+  :root[data-mobile-study=on] .detetive-botoes button { min-height: 44px; padding: 7px; }
+  :root[data-mobile-study=on] .duelo-mesa, :root[data-mobile-study=on] .construtor-cartas { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  :root[data-mobile-study=on] .duelo-mesa .versus { display: none; }
+  :root[data-mobile-study=on] .carta { padding: 10px; width: 100%; min-width: 0; overflow-wrap: anywhere; }
+  :root[data-mobile-study=on] .carta-formula { font-size: 1.4rem; }
+  :root[data-mobile-study=on] .carta dl > div { flex-wrap: wrap; padding: 3px 0; }
+  :root[data-mobile-study=on] .siab-dialog { max-height: calc(var(--mobile-visible-height, 100dvh) - 20px); }
+  :root[data-mobile-study=on] .dialog-actions { flex-wrap: wrap; gap: 8px; }
+  :root[data-mobile-study=on] .dialog-actions > button { min-height: 44px; }
+}
+@media screen and (max-width: 900px) and (max-height: 650px) {
+  :root[data-mobile-study=on] .focus-heading .eyebrow { display: none; }
+  :root[data-mobile-study=on] .focus-heading .resumo-linha { margin-top: 2px; }
+  :root[data-mobile-study=on]:not([data-mobile-doses=on]) #dose-summary { display: none; }
+  :root[data-mobile-study=on] #dose-area .dose-actions #drop-btn { font-size: .75rem; }
+}
+@media screen and (max-width: 900px) and (max-height: 500px) and (min-width: 600px) {
+  :root[data-mobile-study=on] { --bottom-h: calc(48px + env(safe-area-inset-bottom)); }
+  :root[data-mobile-study=on] .bottom-nav a { min-height: 44px; padding-block: 2px; }
+  :root[data-mobile-study=on] .bottom-nav a svg { height: 16px; }
+  :root[data-mobile-study=on] .app-header { padding-block: 2px; padding-top: calc(2px + env(safe-area-inset-top)); }
+  :root[data-mobile-study=on] .view-tabs { min-height: 48px; padding-block: 2px; }
+  :root[data-mobile-study=on] .focus-view { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 14px; padding: 4px 14px; }
+  :root[data-mobile-study=on] .focus-heading { grid-column: 1; grid-row: 1; }
+  :root[data-mobile-study=on] .focus-heading h1 { font-size: .95rem; }
+  :root[data-mobile-study=on] .focus-view .tube-stage { display: contents; }
+  :root[data-mobile-study=on] .focus-view .stage-stats { grid-column: 1; grid-row: 2; width: 52%; }
+  :root[data-mobile-study=on] .focus-view .volume-readout { grid-column: 1; grid-row: 2; width: 44%; }
+  :root[data-mobile-study=on] .focus-view .large-tube { grid-column: 2; grid-row: 1 / 4; height: max(120px, calc(100dvh - 260px)); }
+  :root[data-mobile-study=on] .ph-readout strong { font-size: 1.2rem; }
+  :root[data-mobile-study=on] .ph-readout { margin-top: 0; }
+  :root[data-mobile-study=on] .volume-readout strong { font-size: 1rem; }
+  :root[data-mobile-study=on] .color-reading { grid-column: 1; grid-row: 3; font-size: .7rem; padding: 0; }
+  :root[data-mobile-study=on] .focus-view > :is(.notice,.field-hint) { grid-column: 1 / -1; }
+}
+@media print { .mobile-study-control { display: none !important; } }

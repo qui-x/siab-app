@@ -1,0 +1,1078 @@
+/* RC.3: cena experimental e apresentações compartilhadas das docas.
+   Camadas: cena 0; ações 10; docas 30; backdrop/sheet 60/70;
+   menus globais 80; dialogs usam a top layer nativa. */
+:root {
+  --dock-gap: 12px;
+  --dock-radius: var(--radius-lg, 14px);
+  --dock-left-width: clamp(280px, 23vw, 320px);
+  --dock-right-width: clamp(300px, 26vw, 360px);
+  --dock-shadow: 0 6px 22px #0002;
+}
+.workspace-launchers,
+.workspace-toolbar,
+.dock-header,
+.dock-tabs,
+.context-action-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.workspace-launchers button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.workspace-launchers svg {
+  width: 19px;
+  height: 19px;
+  flex: none;
+}
+.workspace-launchers [aria-expanded="true"],
+.dock-tabs [aria-pressed="true"] {
+  border-color: var(--accent);
+  box-shadow: inset 0 -2px var(--accent);
+  color: var(--text);
+}
+.dock button,
+.dock input,
+.dock select {
+  max-width: 100%;
+}
+.dock-button,
+.dock-close {
+  min-height: 44px;
+}
+.dock-section-hidden,
+.dock-content-hidden {
+  display: none !important;
+}
+.dock-collapsed {
+  display: none !important;
+}
+.dock-header {
+  flex: none;
+  flex-wrap: wrap;
+  padding: 10px 12px;
+  margin: 0;
+  border-bottom: 1px solid var(--border);
+  background: var(--panel);
+}
+.dock-header h2 {
+  margin: 0;
+  font-size: 0.85rem;
+  flex: 1;
+  min-width: 70px;
+}
+.dock-header .ajuda-link {
+  margin: 0;
+}
+.dock-header .dock-close,
+.dock-header .dock-button {
+  padding: 5px 9px;
+  font-size: 0.75rem;
+}
+.dock-tabs {
+  padding: 8px 12px;
+  flex: none;
+  gap: 4px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--border);
+}
+.dock-tabs button {
+  flex: 1;
+  font-size: 0.72rem;
+  padding: 6px;
+}
+.dock-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  padding: 14px;
+  scroll-padding: 16px;
+}
+.dock-scroll > :first-child {
+  margin-top: 0;
+}
+.dock .painel-secao {
+  border-top: 0;
+  padding-top: 0;
+}
+.dock .painel-secao + .painel-secao {
+  margin-top: 16px;
+}
+.dock .ver-tabs {
+  display: block;
+}
+.dock .ver-family-tabs {
+  margin: 0 0 12px;
+}
+.dock .ver-item-tabs {
+  margin: 0 0 16px;
+}
+.dock .ver-tabs button {
+  min-height: 44px;
+}
+.dock .ver-conteudo {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.dock .table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+}
+.dock .table-scroll table {
+  min-width: 420px;
+}
+.dock-data-menu {
+  display: grid;
+  gap: 10px;
+}
+.dock-data-menu > button {
+  text-align: left;
+  justify-content: flex-start;
+}
+.dock-data-menu .painel-secao {
+  margin-top: 8px;
+}
+.dock-setup-summary h3 {
+  margin: 0 0 14px;
+  font-size: 1rem;
+}
+.dock .grafico-medido {
+  width: 100%;
+  max-height: none;
+}
+.dock .instrument-reading {
+  font-size: 1.3rem;
+  font-variant-numeric: tabular-nums;
+}
+.dock .ph-meter {
+  max-width: 300px;
+}
+.dock .field-pair {
+  grid-template-columns: minmax(0, 1fr);
+}
+.dock .instrument-section {
+  margin-top: 14px;
+}
+.workspace-stage {
+  background: radial-gradient(
+    ellipse at 50% 52%,
+    var(--panel2),
+    transparent 67%
+  );
+}
+.workspace-toolbar {
+  justify-content: space-between;
+  flex: none;
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+  position: relative;
+  z-index: 1;
+}
+.workspace-toolbar .view-tabs {
+  border: 0;
+  padding: 0;
+  min-height: 44px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  background: none;
+  position: static;
+}
+.workspace-toolbar .view-tab-btn {
+  min-height: 44px;
+}
+.workspace-toolbar .view-tabs-mode {
+  letter-spacing: 0.03em;
+  margin-left: 16px;
+}
+.context-action-bar {
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.context-action-bar button {
+  min-height: 44px;
+}
+.context-action-bar .agitar-btn {
+  min-width: 100px;
+  justify-content: center;
+  margin-left: 0;
+}
+.context-action-bar .agitar-btn svg {
+  width: 18px;
+  height: 18px;
+}
+.workspace .tube-list {
+  overflow-x: auto;
+  min-width: 0;
+  flex-wrap: nowrap;
+}
+.workspace .tube-list > button {
+  flex: none;
+  min-height: 44px;
+}
+.workspace .tube-list [aria-pressed="true"],
+.workspace .tube-list [aria-current="true"] {
+  outline: 2px solid var(--accent);
+  outline-offset: -3px;
+}
+.workspace .overview-tube[aria-current="true"]::after {
+  content: "Em foco";
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: var(--panel);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 2px 6px;
+  font-size: 0.65rem;
+  font-weight: 700;
+}
+.workspace .overview-group-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin: 8px 0;
+  font-size: 0.78rem;
+  color: var(--secondary);
+}
+.workspace .overview-group-summary p {
+  margin: 0;
+}
+.workspace .overview-group {
+  font-weight: 600;
+}
+.workspace .color-reading {
+  justify-content: center;
+}
+.workspace .ph-readout .phase {
+  font-size: 0.78rem;
+}
+.workspace .tube-strip {
+  padding: 6px 16px;
+  gap: 10px;
+}
+.workspace .tube-strip-heading {
+  flex: none;
+}
+.workspace .tube-strip .strip-add {
+  min-height: 44px;
+}
+.workspace .name-row h1 {
+  font-size: clamp(1.1rem, 1.5vw, 1.45rem);
+}
+.workspace .focus-heading #tube-index {
+  font-size: 0.65rem;
+}
+.workspace .color-reading p {
+  margin: 0;
+}
+.workspace .dose-info {
+  justify-content: center;
+}
+.workspace .dose-area {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.workspace .dose-barra {
+  justify-content: center;
+}
+.workspace .dose-actions {
+  flex: 0 1 auto;
+}
+.workspace .dose-actions #drop-btn {
+  min-width: 180px;
+}
+.workspace .dose-shortcuts {
+  justify-content: center;
+}
+.workspace #dose-summary {
+  color: var(--secondary);
+}
+.workspace .resumo-linha {
+  font-variant-numeric: tabular-nums;
+}
+.workspace #temperature-value {
+  display: none;
+}
+.workspace #prepare-btn {
+  display: none;
+}
+.workspace[data-right-open="true"][data-active-tool="ph"] .stage-stats {
+  visibility: hidden;
+}
+:root[data-workspace="rc3"] .sheet-backdrop {
+  z-index: 60;
+}
+:root[data-workspace="rc3"] .drawer {
+  z-index: 80;
+}
+:root[data-workspace="rc3"] .workspace .view-tabs .chip-ver,
+:root[data-workspace="rc3"] .workspace .view-tabs .chip-sep {
+  display: none !important;
+}
+:root[data-workspace="rc3"] body:has(.workspace:not([hidden])) #prepare-btn {
+  display: none;
+}
+
+@media screen and (min-width: 901px) {
+  :root[data-workspace="rc3"] .workspace,
+  :root[data-workspace="rc3"] .workspace.sem-ver {
+    position: relative;
+    display: block;
+    height: calc(100dvh - var(--header-h));
+    padding: 0;
+    overflow: hidden;
+  }
+  :root[data-workspace="rc3"] body[data-restrita="true"] .workspace {
+    height: calc(100dvh - var(--header-h) - var(--activity-height, 46px));
+  }
+  :root[data-workspace="rc3"] .workspace-stage {
+    display: flex;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+    scroll-padding: 0;
+  }
+  :root[data-workspace="rc3"] .workspace-stage .focus-view,
+  :root[data-workspace="rc3"] .workspace-stage .overview-view {
+    flex: 1 1 0;
+    min-height: 0;
+    overflow: auto;
+    width: auto;
+    max-width: none;
+    margin: 0;
+    padding: 14px max(24px, var(--dock-right-inset, 0px)) 8px
+      max(24px, var(--dock-left-inset, 0px));
+  }
+  :root[data-workspace="rc3"] .workspace-stage .focus-view .tube-stage {
+    flex: 1 0 160px;
+    min-height: 160px;
+    grid-template-columns: minmax(100px, 1fr) minmax(130px, 1.5fr) minmax(
+        80px,
+        1fr
+      );
+    gap: 14px;
+    margin-top: 6px;
+  }
+  :root[data-workspace="rc3"] .workspace .focus-heading {
+    justify-content: center;
+    text-align: center;
+  }
+  :root[data-workspace="rc3"] .workspace .name-row,
+  :root[data-workspace="rc3"] .workspace .resumo-linha {
+    justify-content: center;
+  }
+  :root[data-workspace="rc3"] .workspace .group-notice {
+    align-self: center;
+    margin-top: 6px;
+  }
+  :root[data-workspace="rc3"] .workspace .stage-stats {
+    justify-self: end;
+    max-width: 190px;
+  }
+  :root[data-workspace="rc3"] .workspace .volume-readout {
+    justify-self: start;
+    text-align: left;
+  }
+  :root[data-workspace="rc3"] .workspace .dose-area {
+    position: static;
+    margin: 0;
+    padding: 8px 0 0;
+  }
+  :root[data-workspace="rc3"] .workspace .tube-strip {
+    position: static;
+    flex: none;
+  }
+  :root[data-workspace="rc3"] .workspace .context-action-bar {
+    margin-top: 7px;
+  }
+  :root[data-workspace="rc3"] .workspace .dock {
+    position: absolute;
+    top: 76px;
+    bottom: 74px;
+    height: auto;
+    max-height: none;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 0;
+    min-width: 0;
+    background: var(--panel);
+    background: color-mix(in srgb, var(--panel) 97%, transparent);
+    border: 1px solid var(--border);
+    border-radius: var(--dock-radius);
+    box-shadow: var(--dock-shadow);
+    transform: none;
+    visibility: visible;
+    z-index: 30;
+    transition: opacity 0.14s ease;
+  }
+  :root[data-workspace="rc3"] .dock-left {
+    left: var(--dock-gap);
+    width: var(--dock-left-width);
+  }
+  :root[data-workspace="rc3"] .dock-right {
+    right: var(--dock-gap);
+    width: var(--dock-right-width);
+  }
+  :root[data-workspace="rc3"] .dock-right[data-presentation="standard"] {
+    width: clamp(330px, 29vw, 420px);
+  }
+  :root[data-workspace="rc3"] .dock-right[data-presentation="wide"] {
+    width: clamp(440px, 46vw, 760px);
+  }
+  :root[data-workspace="rc3"]
+    .workspace
+    .dock-right[data-presentation="fullscreen"] {
+    inset: 12px;
+    width: auto;
+    bottom: 12px;
+  }
+  :root[data-workspace="rc3"]
+    .dock-right[data-presentation="fullscreen"]
+    .dock-scroll {
+    padding: 18px clamp(16px, 5vw, 80px);
+  }
+  :root[data-workspace="rc3"]
+    .dock-right[data-presentation="fullscreen"]
+    .grafico-medido {
+    max-height: 58dvh;
+  }
+  :root[data-workspace="rc3"] .workspace.dock-fullscreen .workspace-stage {
+    visibility: hidden;
+  }
+  :root[data-workspace="rc3"] .dock-right .instrument-section {
+    padding: 12px 0;
+    border-width: 0 0 1px;
+    border-radius: 0;
+  }
+  :root[data-workspace="rc3"] .dock-right .ver-acoes {
+    gap: 6px;
+  }
+  :root[data-workspace="rc3"] .dock-right .ver-acoes button {
+    flex: 1 1 120px;
+  }
+}
+@media screen and (min-width: 901px) and (max-width: 1100px) {
+  :root {
+    --dock-left-width: 280px;
+    --dock-right-width: 310px;
+  }
+  .workspace-toolbar .view-tabs-mode {
+    display: none;
+  }
+  .workspace-toolbar {
+    padding-inline: 12px;
+  }
+  .workspace .dose-actions #drop-btn {
+    min-width: 150px;
+  }
+}
+@media screen and (max-width: 900px) {
+  :root[data-workspace="rc3"] body:has(.workspace:not([hidden])) {
+    --bottom-h: calc(60px + env(safe-area-inset-bottom));
+  }
+  :root[data-workspace="rc3"] body:has(.workspace:not([hidden])) > .bottom-nav {
+    display: none;
+  }
+  :root[data-workspace="rc3"] .workspace,
+  :root[data-workspace="rc3"] body[data-restrita="true"] .workspace {
+    display: block;
+    position: relative;
+    height: auto;
+    padding: 0 0 calc(64px + env(safe-area-inset-bottom)) !important;
+    min-height: calc(100dvh - var(--header-h));
+  }
+  :root[data-workspace="rc3"] .workspace .workspace-stage {
+    overflow: visible;
+  }
+  :root[data-workspace="rc3"] .workspace-toolbar {
+    padding: 4px 12px;
+    min-height: 52px;
+  }
+  :root[data-workspace="rc3"] .workspace-toolbar .view-tabs {
+    display: flex;
+    width: 100%;
+    gap: 6px;
+    min-height: 44px;
+    padding: 0;
+  }
+  :root[data-workspace="rc3"] .workspace-toolbar .view-tabs > button {
+    flex: 1;
+    min-width: 0;
+    width: auto;
+  }
+  :root[data-workspace="rc3"] .workspace-toolbar .view-tabs-mode {
+    display: none;
+  }
+  :root[data-workspace="rc3"] .workspace-launchers {
+    position: fixed;
+    z-index: 10;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 6px max(10px, env(safe-area-inset-left))
+      calc(6px + env(safe-area-inset-bottom));
+    background: var(--panel);
+    border-top: 1px solid var(--border);
+    gap: 8px;
+  }
+  :root[data-workspace="rc3"] .workspace-launchers > button {
+    flex: 1;
+    min-height: 44px;
+    justify-content: center;
+    padding: 6px;
+    font-size: 0.78rem;
+  }
+  :root[data-workspace="rc3"] .workspace .focus-view {
+    display: flex;
+    padding: 10px 12px 8px;
+    gap: 0;
+  }
+  :root[data-workspace="rc3"] .workspace .focus-view .tube-stage {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto var(--mobile-glass-height, 240px);
+    min-height: 0;
+    gap: 4px 12px;
+  }
+  :root[data-workspace="rc3"] .workspace .focus-view .stage-stats {
+    grid-column: 1;
+    grid-row: 1;
+    width: auto;
+    max-width: none;
+    justify-self: start;
+  }
+  :root[data-workspace="rc3"] .workspace .focus-view .volume-readout {
+    grid-column: 2;
+    grid-row: 1;
+    width: auto;
+    justify-self: end;
+  }
+  :root[data-workspace="rc3"] .workspace .focus-view .large-tube {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    height: auto;
+    min-height: 0;
+  }
+  :root[data-workspace="rc3"] .workspace .name-row h1 {
+    font-size: 1rem;
+  }
+  :root[data-workspace="rc3"] .workspace .focus-heading .eyebrow {
+    display: none;
+  }
+  :root[data-workspace="rc3"] .workspace .resumo-linha {
+    font-size: 0.75rem;
+  }
+  :root[data-workspace="rc3"] .workspace .ph-readout strong {
+    font-size: 1.5rem;
+  }
+  :root[data-workspace="rc3"] .workspace .ph-readout {
+    gap: 2px 6px;
+  }
+  :root[data-workspace="rc3"] .workspace .volume-readout strong {
+    font-size: 1.15rem;
+  }
+  :root[data-workspace="rc3"] .workspace .color-reading {
+    gap: 6px;
+    padding: 4px 0;
+    font-size: 0.76rem;
+  }
+  :root[data-workspace="rc3"] .workspace:not(.vazia) .dose-area {
+    position: static;
+    padding: 6px 0 0;
+    margin: 0;
+    background: none;
+  }
+  :root[data-workspace="rc3"] .workspace .dose-info {
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 0.68rem;
+    margin-bottom: 5px;
+  }
+  :root[data-workspace="rc3"] .workspace .dose-barra {
+    gap: 6px;
+  }
+  :root[data-workspace="rc3"] .workspace #dose-area .dose-actions {
+    display: flex;
+    align-items: stretch;
+    flex: 1 1 100%;
+    gap: 6px;
+  }
+  :root[data-workspace="rc3"] .workspace #dose-area .dose-actions button {
+    min-height: 44px;
+    padding: 5px;
+    min-width: 0;
+    font-size: 0.78rem;
+  }
+  :root[data-workspace="rc3"] .workspace #dose-area #undo-btn {
+    flex: 0 0 44px;
+  }
+  :root[data-workspace="rc3"] .workspace #dose-area #drop-btn {
+    flex: 1 1 0;
+  }
+  :root[data-workspace="rc3"] .workspace #dose-area #mobile-doses-toggle {
+    flex: 0 0 76px;
+  }
+  :root[data-workspace="rc3"] .workspace #undo-btn span {
+    display: none;
+  }
+  :root[data-workspace="rc3"] .workspace .context-action-bar {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+    margin-top: 6px;
+    gap: 6px;
+  }
+  :root[data-workspace="rc3"] .workspace .context-action-bar button {
+    min-width: 0;
+    min-height: 44px;
+    width: 100%;
+    margin: 0;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--panel2);
+    color: var(--text);
+    justify-content: center;
+    font-size: 0.77rem;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+  :root[data-workspace="rc3"] .workspace .dose-shortcuts {
+    display: none;
+  }
+  :root[data-workspace="rc3"][data-mobile-doses="on"]
+    .workspace
+    .dose-shortcuts {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+  :root[data-workspace="rc3"] .workspace .tube-strip {
+    position: static;
+    padding: 6px 12px;
+    flex-wrap: nowrap;
+  }
+  :root[data-workspace="rc3"] .workspace .tube-strip .strip-label {
+    display: none;
+  }
+  :root[data-workspace="rc3"] .workspace .tube-strip .strip-add {
+    font-size: 0.72rem;
+    padding: 6px;
+  }
+  :root[data-workspace="rc3"] .workspace .tube-strip-heading {
+    display: none;
+  }
+  :root[data-workspace="rc3"] .workspace .tube-list {
+    flex: 1;
+  }
+  :root[data-workspace="rc3"] .workspace .dock {
+    position: fixed;
+    z-index: 70;
+    left: max(6px, env(safe-area-inset-left));
+    right: max(6px, env(safe-area-inset-right));
+    top: var(--sheet-top, 10dvh);
+    bottom: auto;
+    height: var(--sheet-height, 88dvh);
+    max-height: calc(100dvh - 16px);
+    width: auto;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    transform: none;
+    visibility: visible;
+    transition: none;
+    border: 1px solid var(--border);
+    border-radius: var(--dock-radius);
+    background: var(--panel);
+    box-shadow: var(--dock-shadow);
+  }
+  :root[data-workspace="rc3"] .workspace .dock-header {
+    position: static;
+    padding: 8px 10px;
+    gap: 4px;
+    min-height: 60px;
+  }
+  :root[data-workspace="rc3"] .workspace .dock-header h2 {
+    font-size: 0.8rem;
+  }
+  :root[data-workspace="rc3"] .workspace .dock-scroll {
+    padding: 12px 12px max(16px, env(safe-area-inset-bottom));
+  }
+  :root[data-workspace="rc3"] .workspace .dock-tabs {
+    padding: 6px 10px;
+  }
+  :root[data-workspace="rc3"] .workspace .dock .ver-tabs {
+    display: block;
+  }
+  :root[data-workspace="rc3"]
+    .workspace
+    .dock
+    :is(.ver-family-tabs, .ver-item-tabs) {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  :root[data-workspace="rc3"]
+    .workspace
+    .dock
+    :is(.ver-family-tabs, .ver-item-tabs)
+    button {
+    min-height: 52px;
+    text-align: left;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+  :root[data-workspace="rc3"]
+    .workspace
+    .dock[data-level="families"]
+    :is(#ver-subpanel, #ver-conteudo),
+  :root[data-workspace="rc3"]
+    .workspace
+    .dock[data-level="tools"]
+    :is(.ver-family-tabs, #ver-conteudo),
+  :root[data-workspace="rc3"]
+    .workspace
+    .dock[data-level="tool"]
+    :is(.ver-family-tabs, #ver-subpanel, #ver-tabs > .eyebrow) {
+    display: none;
+  }
+  :root[data-workspace="rc3"]
+    .workspace
+    .dock[data-level="tool"]
+    #ver-tabs:has(.ver-single) {
+    display: block;
+  }
+  :root[data-workspace="rc3"]
+    .workspace
+    .dock[data-level="tool"]
+    #ver-tabs:not(:has(.ver-single)) {
+    margin: 0;
+  }
+  :root[data-workspace="rc3"] .workspace .dock .table-scroll {
+    overflow: auto;
+  }
+  :root[data-workspace="rc3"] .workspace .overview-view {
+    padding: 12px;
+  }
+  :root[data-workspace="rc3"] .workspace.selecting-tubes .overview-selection {
+    position: static;
+    max-height: none;
+  }
+  :root[data-workspace="rc3"] .workspace .overview-group-summary {
+    font-size: 0.72rem;
+  }
+}
+@media screen and (max-width: 900px) and (max-height: 500px) and (min-width: 600px) {
+  :root[data-workspace="rc3"] .workspace .focus-view {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 12px;
+  }
+  :root[data-workspace="rc3"] .workspace .focus-view .tube-stage {
+    display: contents;
+  }
+  :root[data-workspace="rc3"] .workspace .focus-view .large-tube {
+    grid-column: 2;
+    grid-row: 1 / 5;
+    min-height: 210px;
+  }
+  :root[data-workspace="rc3"] .workspace .focus-view .stage-stats {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  :root[data-workspace="rc3"] .workspace .focus-view .volume-readout {
+    grid-column: 1;
+    grid-row: 3;
+    justify-self: start;
+  }
+  :root[data-workspace="rc3"] .workspace .focus-view #dose-area {
+    grid-column: 1 / -1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dock,
+  .workspace-stage {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+@media (forced-colors: active) {
+  .dock,
+  .workspace-launchers button {
+    border: 2px solid CanvasText;
+  }
+  .dock-tabs [aria-pressed="true"],
+  .workspace-launchers [aria-expanded="true"],
+  .workspace .overview-tube[aria-current="true"] {
+    outline: 2px solid Highlight;
+  }
+}
+@media print {
+  .dock,
+  .workspace-launchers,
+  .workspace-toolbar,
+  .context-action-bar {
+    display: none !important;
+  }
+}
+/* As ações pertencem à cena e não rolam com o recipiente nem com as docas. */
+.workspace .workspace-actions {
+  flex: none;
+}
+@media screen and (min-width: 901px) {
+  :root[data-workspace="rc3"] .workspace .workspace-actions {
+    padding: 8px max(24px, var(--dock-right-inset, 0px)) 8px
+      max(24px, var(--dock-left-inset, 0px));
+  }
+  .workspace .dose-barra {
+    max-width: 820px;
+    margin-inline: auto;
+  }
+}
+@media screen and (max-width: 900px) {
+  :root[data-workspace="rc3"] .workspace,
+  :root[data-workspace="rc3"] body[data-restrita="true"] .workspace {
+    height: calc(100dvh - var(--header-h) - var(--activity-height, 0px));
+    min-height: 0;
+  }
+  :root[data-workspace="rc3"] .workspace .workspace-stage {
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+  }
+  :root[data-workspace="rc3"] .workspace .focus-view,
+  :root[data-workspace="rc3"] .workspace .overview-view {
+    flex: 1 1 0;
+    min-height: 0;
+    overflow: auto;
+  }
+  :root[data-workspace="rc3"] .workspace .workspace-actions {
+    padding: 6px 12px 8px;
+    background: var(--bg);
+  }
+  :root[data-workspace="rc3"] .workspace .tube-strip {
+    flex: none;
+  }
+  :root[data-workspace="rc3"] .workspace:not(.vazia) .workspace-actions {
+    padding: 6px 12px 8px;
+  }
+  :root[data-workspace="rc3"]
+    .workspace
+    .workspace-actions
+    .context-action-bar {
+    margin-top: 6px;
+  }
+  :root[data-workspace="rc3"] .workspace .focus-view .tube-stage {
+    flex: 1 0 auto;
+  }
+}
+.workspace.vazia .workspace-actions {
+  display: none !important;
+}
+
+/* 1.0.0 — correção da cena mobile. A vidraria ocupa o espaço real do flex;
+   textos científicos continuam renderizados nas docas e nos registros. */
+#mobile-bench-notice-space { display: none; }
+/* A região de anúncios para leitores de tela ficava 1 px abaixo da tela:
+   ao dar foco ao conta-gotas, a página inteira rolava 1 px. */
+#announcer { top: 0; left: 0; }
+@media screen and (max-width: 900px) {
+  :root[data-workspace="rc3"] body:has(.workspace:not([hidden])) {
+    /* A própria bancada já reserva a navegação. A reserva duplicada no body
+       fazia o navegador rolar a página ao dar foco aos controles. */
+    padding-bottom: 0;
+  }
+  :root[data-workspace="rc3"] .workspace,
+  :root[data-workspace="rc3"] body[data-restrita="true"] .workspace {
+    height: var(--mobile-workspace-height, calc(var(--mobile-visible-height, 100dvh) - var(--header-h) - var(--activity-height, 0px)));
+    padding-bottom: var(--mobile-launchers-height, calc(60px + env(safe-area-inset-bottom))) !important;
+  }
+  :root[data-workspace="rc3"] .workspace:not(.vazia) .focus-view {
+    display: flex;
+    flex-direction: column;
+    /* Limite de leitura do desenho, comum a todas as telas. Se faltar
+       altura, a rolagem nativa revela o restante da bancada. */
+    min-height: calc(8rem + 44px + 26px);
+    overflow-y: auto;
+    /* A rolagem por gesto permanece; atualizações de texto não escolhem
+       uma nova âncora de rolagem dentro da cena. */
+    overflow-anchor: none;
+  }
+  :root[data-workspace="rc3"] .workspace .workspace-stage {
+    overflow-y: auto;
+    scroll-padding: 0;
+    overflow-anchor: none;
+  }
+  :root[data-workspace="rc3"] .workspace .focus-heading > div {
+    width: 100%;
+  }
+  :root[data-workspace="rc3"] .workspace .name-row h1 {
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  /* O resumo fica sempre na segunda linha: trocar a fórmula do reagente
+     não alterna a barra entre uma e duas linhas nem redimensiona o palco. */
+  :root[data-workspace="rc3"] .workspace .dose-info {
+    display: grid;
+    grid-template-columns: minmax(0, max-content) 44px;
+  }
+  :root[data-workspace="rc3"] .workspace #titrant-label {
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  :root[data-workspace="rc3"] .workspace #dose-summary {
+    grid-column: 1 / -1;
+    text-align: center;
+    white-space: nowrap;
+  }
+  :root[data-workspace="rc3"] .workspace .focus-view :is(
+    .resumo-linha, .stage-stats, .volume-readout, .color-reading,
+    #vidro-nota, #equivalence-note, #group-notice
+  ) { display: none; }
+  :root[data-workspace="rc3"] .workspace .focus-view .tube-stage {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
+    flex: 1 0 0;
+    min-height: 0;
+    gap: 0;
+  }
+  :root[data-workspace="rc3"] .workspace .focus-view .large-tube {
+    grid-column: 1;
+    grid-row: 1;
+    min-height: 0;
+    height: auto;
+  }
+  :root[data-mobile-focus="on"] #mobile-bench-notice-space {
+    display: block;
+    flex: 0 0 calc(2 * 1.35 * .875rem + 16px);
+  }
+  :root[data-mobile-focus="on"] body:not(.sheet-open) #toast[data-contexto="bancada"]:not(:has(button)) {
+    top: var(--bench-notice-top);
+    max-height: var(--bench-notice-height);
+    padding: 6px 12px;
+    line-height: 1.35;
+    overflow: auto;
+    overflow-wrap: anywhere;
+  }
+  :root[data-mobile-focus="on"][data-mobile-notice="side"] #mobile-bench-notice-space {
+    display: none;
+  }
+  :root[data-mobile-focus="on"][data-mobile-notice="side"] body:not(.sheet-open) #toast[data-contexto="bancada"]:not(:has(button)) {
+    left: var(--bench-notice-left);
+    width: var(--bench-notice-width);
+    max-width: var(--bench-notice-width);
+    transform: none;
+    padding: 6px 8px;
+    font-size: .8rem;
+  }
+  /* O convite inicial continua acessível, após a observação. */
+  :root[data-workspace="rc3"] .workspace:not(.vazia) #boas-vindas {
+    order: 2;
+  }
+  :root[data-workspace="rc3"] .workspace .focus-view:has(#boas-vindas:not([hidden])) .tube-stage {
+    flex-basis: 8rem;
+  }
+}
+@media screen and (max-width: 900px) and (max-height: 500px) and (min-width: 600px) {
+  /* A orientação compacta já usa colunas. Como as ações são irmãs da cena
+     desde a RC.5, as colunas precisam pertencer ao contêiner compartilhado. */
+  :root[data-workspace="rc3"] .workspace:not(.vazia):not(.overview) .workspace-stage {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+  }
+  :root[data-workspace="rc3"] .workspace .workspace-toolbar {
+    grid-column: 1 / -1;
+  }
+  :root[data-workspace="rc3"] .workspace:not(.vazia) .focus-view {
+    grid-column: 1;
+    grid-row: 2;
+    min-height: 0;
+  }
+  :root[data-workspace="rc3"] .workspace .workspace-actions {
+    grid-column: 2;
+    grid-row: 2;
+    min-height: 0;
+    overflow-y: auto;
+  }
+  :root[data-workspace="rc3"] .workspace .tube-strip {
+    grid-column: 1 / -1;
+    grid-row: 3;
+  }
+}
+@media screen and (max-width: 599px) and (max-height: 500px) and (orientation: landscape) {
+  /* Na paisagem mais baixa, as ações rolam ao lado da observação. */
+  :root[data-workspace="rc3"] .workspace:not(.vazia):not(.overview) .workspace-stage {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+  }
+  :root[data-workspace="rc3"] .workspace .workspace-toolbar {
+    grid-column: 1 / -1;
+  }
+  :root[data-workspace="rc3"] .workspace:not(.vazia) .focus-view {
+    grid-column: 1;
+    grid-row: 2 / 4;
+    min-height: 0;
+  }
+  :root[data-workspace="rc3"] .workspace .workspace-actions {
+    grid-column: 2;
+    grid-row: 2;
+    min-height: 0;
+    overflow-y: auto;
+  }
+  :root[data-workspace="rc3"] .workspace .tube-strip {
+    grid-column: 2;
+    grid-row: 3;
+    min-width: 0;
+  }
+}
+@media screen and (min-width: 901px) {
+  :root[data-workspace="rc3"] .workspace .dock {
+    align-self: normal;
+    justify-self: normal;
+    height: calc(100% - 150px);
+  }
+  :root[data-workspace="rc3"] .workspace .dock[data-presentation="fullscreen"] {
+    height: calc(100% - 24px);
+  }
+}
+:root[data-workspace="rc3"]
+  body:has(.workspace:not([hidden]))
+  .header-notebook {
+  display: none;
+}
+.workspace .dock .ajuda-link {
+  flex: none;
+  width: 36px;
+  height: 36px;
+}
+@media screen and (max-width: 1200px) {
+  :root[data-workspace="rc3"] body:has(.workspace:not([hidden])) .main-nav {
+    display: none;
+  }
+}
+@media screen and (max-width: 900px) {
+  .workspace .dock .ajuda-link,
+  .workspace .stage-stats .ajuda-link {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}

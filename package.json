@@ -1,0 +1,29 @@
+{
+  "name": "siab",
+  "version": "1.0.0",
+  "description": "SIAB - Simulador Interativo de Ácidos e Bases",
+  "main": "main.js",
+  "author": "qui-x",
+  "license": "GPL-3.0",
+  "scripts": {
+    "start": "electron .",
+    "build:exe": "electron-builder --win portable --x64",
+    "build:apk": "cap sync android && cd android && ./gradlew assembleDebug"
+  },
+  "build": {
+    "appId": "io.github.quix.siab",
+    "productName": "SIAB",
+    "files": ["main.js", "www/**/*"],
+    "win": { "target": "portable", "icon": "icon.png" },
+    "portable": { "artifactName": "SIAB-portatil.exe" }
+  },
+  "devDependencies": {
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8",
+    "@capacitor/cli": "^6.2.0"
+  },
+  "dependencies": {
+    "@capacitor/core": "^6.2.0",
+    "@capacitor/android": "^6.2.0"
+  }
+}
