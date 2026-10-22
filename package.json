@@ -7,9 +7,9 @@
   "license": "GPL-3.0",
   "scripts": {
     "start": "electron .",
-    "build:exe": "electron-builder --win nsis portable msi --x64",
+    "build:exe": "electron-builder --win nsis portable msi --x64 --publish never",
     "build:apk": "cap sync android && cd android && ./gradlew assembleDebug",
-    "build:linux": "electron-builder --linux AppImage --x64"
+    "build:linux": "electron-builder --linux AppImage --x64 --publish never"
   },
   "build": {
     "appId": "io.github.quix.siab",
