@@ -7,8 +7,9 @@
   "license": "GPL-3.0",
   "scripts": {
     "start": "electron .",
-    "build:exe": "electron-builder --win portable --x64",
-    "build:apk": "cap sync android && cd android && ./gradlew assembleDebug"
+    "build:exe": "electron-builder --win nsis portable msi --x64",
+    "build:apk": "cap sync android && cd android && ./gradlew assembleDebug",
+    "build:linux": "electron-builder --linux AppImage --x64"
   },
   "build": {
     "appId": "io.github.quix.siab",
@@ -18,11 +19,35 @@
       "www/**/*"
     ],
     "win": {
-      "target": "portable",
+      "target": [
+        "nsis",
+        "portable",
+        "msi"
+      ],
       "icon": "icon.png"
     },
     "portable": {
       "artifactName": "SIAB-portatil.exe"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "artifactName": "SIAB-instalador.exe"
+    },
+    "msi": {
+      "oneClick": false,
+      "perMachine": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "artifactName": "SIAB-instalador.msi"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "icon.png",
+      "category": "Education",
+      "artifactName": "SIAB-linux.AppImage"
     }
   },
   "devDependencies": {

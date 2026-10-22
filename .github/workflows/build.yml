@@ -1,7 +1,7 @@
-name: Build EXE e APK
+name: Build EXE, MSI, AppImage e APK
 on: [workflow_dispatch, push]
 jobs:
-  exe:
+  windows:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
@@ -10,7 +10,22 @@ jobs:
       - run: npm install
       - run: npm run build:exe
       - uses: actions/upload-artifact@v4
-        with: { name: SIAB-portatil-exe, path: dist/SIAB-portatil.exe }
+        with:
+          name: SIAB-windows
+          path: |
+            dist/SIAB-portatil.exe
+            dist/SIAB-instalador.exe
+            dist/SIAB-instalador.msi
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: npm install
+      - run: npm run build:linux
+      - uses: actions/upload-artifact@v4
+        with: { name: SIAB-linux, path: dist/SIAB-linux.AppImage }
   apk:
     runs-on: ubuntu-latest
     steps:
