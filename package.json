@@ -13,17 +13,24 @@
   "build": {
     "appId": "io.github.quix.siab",
     "productName": "SIAB",
-    "files": ["main.js", "www/**/*"],
-    "win": { "target": "portable", "icon": "icon.png" },
-    "portable": { "artifactName": "SIAB-portatil.exe" }
+    "files": [
+      "main.js",
+      "www/**/*"
+    ],
+    "win": {
+      "target": "portable",
+      "icon": "icon.png"
+    },
+    "portable": {
+      "artifactName": "SIAB-portatil.exe"
+    }
   },
   "devDependencies": {
     "electron": "^33.2.0",
     "electron-builder": "^25.1.8",
-    "@capacitor/cli": "^6.2.0"
-  },
-  "dependencies": {
+    "@capacitor/cli": "^6.2.0",
     "@capacitor/core": "^6.2.0",
     "@capacitor/android": "^6.2.0"
-  }
+  },
+  "dependencies": {}
 }
