@@ -41,8 +41,93 @@ jobs:
         run: python tools/gen_android_icons.py android/app/src/main/res icon.png
       - name: Habilitar impressão no Android
         run: |
-          cp tools/android/PrintPlugin.java tools/android/MainActivity.java android/app/src/main/java/io/github/quix/siab/
-          cp tools/android/print-shim.js www/print-shim.js
+          D=android/app/src/main/java/io/github/quix/siab
+          test -d "$D" || { echo "Pasta $D não existe"; exit 1; }
+          cat > $D/PrintPlugin.java <<'FIM_ARQUIVO'
+          package io.github.quix.siab;
+
+          import android.content.Context;
+          import android.os.Handler;
+          import android.os.Looper;
+          import android.print.PrintDocumentAdapter;
+          import android.print.PrintJob;
+          import android.print.PrintManager;
+          import android.webkit.WebView;
+
+          import com.getcapacitor.Plugin;
+          import com.getcapacitor.PluginCall;
+          import com.getcapacitor.PluginMethod;
+          import com.getcapacitor.annotation.CapacitorPlugin;
+
+          /** Abre a tela de impressão do Android (imprimir ou "Salvar como PDF") para a página atual. */
+          @CapacitorPlugin(name = "SIABPrint")
+          public class PrintPlugin extends Plugin {
+
+              @PluginMethod
+              public void print(final PluginCall call) {
+                  final String titulo = call.getString("title", "SIAB");
+                  getActivity().runOnUiThread(() -> {
+                      try {
+                          WebView webView = getBridge().getWebView();
+                          PrintManager pm = (PrintManager) getActivity().getSystemService(Context.PRINT_SERVICE);
+                          PrintDocumentAdapter adaptador = webView.createPrintDocumentAdapter(titulo);
+                          final PrintJob job = pm.print(titulo, adaptador, null);
+                          final Handler handler = new Handler(Looper.getMainLooper());
+                          // Resolve quando o trabalho termina, é cancelado ou falha.
+                          handler.postDelayed(new Runnable() {
+                              @Override
+                              public void run() {
+                                  if (job.isCompleted() || job.isCancelled() || job.isFailed()) {
+                                      call.resolve();
+                                  } else {
+                                      handler.postDelayed(this, 500);
+                                  }
+                              }
+                          }, 500);
+                      } catch (Exception e) {
+                          call.reject(String.valueOf(e.getMessage()));
+                      }
+                  });
+              }
+          }
+          FIM_ARQUIVO
+          cat > $D/MainActivity.java <<'FIM_ARQUIVO'
+          package io.github.quix.siab;
+
+          import android.os.Bundle;
+          import com.getcapacitor.BridgeActivity;
+
+          public class MainActivity extends BridgeActivity {
+              @Override
+              public void onCreate(Bundle savedInstanceState) {
+                  registerPlugin(PrintPlugin.class);
+                  super.onCreate(savedInstanceState);
+              }
+          }
+          FIM_ARQUIVO
+          cat > www/print-shim.js <<'FIM_ARQUIVO'
+          /* Android (Capacitor): o WebView ignora window.print(). Este arquivo liga o window.print()
+             ao plugin nativo SIABPrint e mantém os eventos beforeprint/afterprint que o SIAB usa. */
+          (function () {
+            var cap = window.Capacitor;
+            if (!cap || !cap.isNativePlatform || !cap.isNativePlatform()) return;
+            var nativo = cap.registerPlugin('SIABPrint');
+            var ocupado = false;
+            window.print = function () {
+              if (ocupado) return;
+              ocupado = true;
+              window.dispatchEvent(new Event('beforeprint'));
+              setTimeout(function () {
+                nativo.print({ title: document.title || 'SIAB' })
+                  .catch(function () {})
+                  .then(function () {
+                    ocupado = false;
+                    window.dispatchEvent(new Event('afterprint'));
+                  });
+              }, 200);
+            };
+          })();
+          FIM_ARQUIVO
           sed -i 's#</body>#<script src="print-shim.js"></script></body>#' www/index.html
           grep -c 'print-shim.js' www/index.html
       - run: npm run build:apk
