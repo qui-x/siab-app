@@ -7,11 +7,6 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: 20 }
-      - name: Nova versão do cache (evita arquivos antigos no app)
-        shell: bash
-        run: |
-          sed -i "s/^const VERSAO = \"\(.*\)\";/const VERSAO = \"\1-build${GITHUB_RUN_NUMBER}\";/" www/sw.js
-          grep -n "^const VERSAO" www/sw.js
       - run: npm install
       - run: npm run build:exe
       - uses: actions/upload-artifact@v4
@@ -27,11 +22,6 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: 20 }
-      - name: Nova versão do cache (evita arquivos antigos no app)
-        shell: bash
-        run: |
-          sed -i "s/^const VERSAO = \"\(.*\)\";/const VERSAO = \"\1-build${GITHUB_RUN_NUMBER}\";/" www/sw.js
-          grep -n "^const VERSAO" www/sw.js
       - run: npm install
       - run: npm run build:linux
       - uses: actions/upload-artifact@v4
@@ -45,11 +35,6 @@ jobs:
       - uses: actions/setup-java@v4
         with: { distribution: temurin, java-version: 17 }
       - run: npm install
-      - name: Nova versão do cache (evita arquivos antigos no app)
-        shell: bash
-        run: |
-          sed -i "s/^const VERSAO = \"\(.*\)\";/const VERSAO = \"\1-build${GITHUB_RUN_NUMBER}\";/" www/sw.js
-          grep -n "^const VERSAO" www/sw.js
       - run: npx cap add android
       - run: pip install pillow
       - name: Aplicar ícone e abertura do SIAB
@@ -110,77 +95,17 @@ jobs:
           package io.github.quix.siab;
 
           import android.os.Bundle;
-          import android.webkit.WebView;
-
           import com.getcapacitor.BridgeActivity;
-          import com.getcapacitor.BridgeWebViewClient;
-
-          import java.io.ByteArrayOutputStream;
-          import java.io.InputStream;
 
           public class MainActivity extends BridgeActivity {
               @Override
               public void onCreate(Bundle savedInstanceState) {
                   registerPlugin(PrintPlugin.class);
                   super.onCreate(savedInstanceState);
-
-                  // Injeta o print-shim.js em toda página carregada, direto do pacote do app.
-                  final String shim = lerAsset("public/print-shim.js");
-                  if (shim != null) {
-                      getBridge().setWebViewClient(new BridgeWebViewClient(getBridge()) {
-                          @Override
-                          public void onPageFinished(WebView view, String url) {
-                              super.onPageFinished(view, url);
-                              view.evaluateJavascript(shim, null);
-                          }
-                      });
-                  }
-              }
-
-              private String lerAsset(String caminho) {
-                  try (InputStream in = getAssets().open(caminho)) {
-                      ByteArrayOutputStream out = new ByteArrayOutputStream();
-                      byte[] buf = new byte[4096];
-                      int n;
-                      while ((n = in.read(buf)) > 0) out.write(buf, 0, n);
-                      return out.toString("UTF-8");
-                  } catch (Exception e) {
-                      return null;
-                  }
               }
           }
           FIM_ARQUIVO
-          cat > www/print-shim.js <<'FIM_ARQUIVO'
-          /* Android (Capacitor): o WebView ignora window.print(). Este arquivo liga o window.print()
-             ao plugin nativo SIABPrint e mantém os eventos beforeprint/afterprint que o SIAB usa.
-             É injetado pelo MainActivity a cada página carregada (não depende do cache do app). */
-          (function () {
-            if (window.__siabPrintShim) return;
-            var cap = window.Capacitor;
-            if (!cap || !cap.isNativePlatform || !cap.isNativePlatform()) return;
-            window.__siabPrintShim = true;
-            var nativo = cap.registerPlugin('SIABPrint');
-            var ocupado = false;
-            function falhou(e) {
-              alert('Não foi possível abrir a impressão: ' + ((e && e.message) || e));
-            }
-            window.print = function () {
-              if (ocupado) return;
-              ocupado = true;
-              window.dispatchEvent(new Event('beforeprint'));
-              setTimeout(function () {
-                function fim() {
-                  ocupado = false;
-                  window.dispatchEvent(new Event('afterprint'));
-                }
-                try {
-                  nativo.print({ title: document.title || 'SIAB' }).then(fim, function (e) { fim(); falhou(e); });
-                } catch (e) { fim(); falhou(e); }
-              }, 200);
-            };
-          })();
-          FIM_ARQUIVO
-          test -s www/print-shim.js && echo 'print-shim.js ok'
+          grep -c registerPlugin $D/MainActivity.java
       - run: npm run build:apk
       - uses: actions/upload-artifact@v4
         with: { name: SIAB-apk, path: android/app/build/outputs/apk/debug/app-debug.apk }

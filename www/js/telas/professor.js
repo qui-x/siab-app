@@ -155,8 +155,12 @@ SIAB.professor = (() => {
     guia();
     SIAB.$("folha-impressao").innerHTML = $("teacher-guide").outerHTML;
     document.body.classList.add("imprimindo-roteiro", "imprimindo-folha");
-    window.print();
-    document.body.classList.remove("imprimindo-roteiro", "imprimindo-folha");
+    SIAB.impressao.imprimirPagina().then(() => {
+      document.body.classList.remove(
+        "imprimindo-roteiro",
+        "imprimindo-folha",
+      );
+    });
   }
   function ligar() {
     $("prof-tipo").onchange = opcoes;

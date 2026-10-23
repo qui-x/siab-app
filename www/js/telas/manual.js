@@ -303,7 +303,7 @@ SIAB.manualTela = (() => {
     });
     $("manual-imprimir").addEventListener("click", () => {
       preparePrint();
-      window.print();
+      window.SIAB.impressao.imprimirPagina();
     });
     window.addEventListener("beforeprint", preparePrint);
     window.addEventListener("afterprint", () => {

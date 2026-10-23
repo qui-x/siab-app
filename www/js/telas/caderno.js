@@ -95,7 +95,8 @@ SIAB.telas.caderno = {
     };
     SIAB.$("caderno-csv").onclick = () =>
       SIAB.baixarArquivo("SIAB-caderno.csv", SIAB.cadernoCSV());
-    SIAB.$("caderno-imprimir").onclick = () => window.print();
+    SIAB.$("caderno-imprimir").onclick = () =>
+      SIAB.impressao.imprimirPagina();
     SIAB.$("caderno-limpar").onclick = () =>
       SIAB.confirmar(
         "Apagar Caderno?",

@@ -646,7 +646,7 @@ SIAB.relatorios = (() => {
       render();
     }
     preparar();
-    window.print();
+    SIAB.impressao.imprimirPagina();
   }
   function ligar() {
     const box = SIAB.$("relatorio-conteudo"),
