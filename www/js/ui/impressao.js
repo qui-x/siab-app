@@ -119,10 +119,18 @@ SIAB.impressao = (() => {
           else alert(msg);
         };
         try {
-          cap
-            .registerPlugin("SIABPrint")
-            .print({ title: document.title || "SIAB" })
-            .then(fim, falha);
+          const opcoes = { title: document.title || "SIAB" };
+          let chamada;
+          // O Capacitor do Android (native-bridge.js) oferece nativePromise;
+          // registerPlugin só existe quando o Capacitor vem empacotado.
+          if (typeof cap.nativePromise === "function")
+            chamada = cap.nativePromise("SIABPrint", "print", opcoes);
+          else if (cap.Plugins && cap.Plugins.SIABPrint)
+            chamada = cap.Plugins.SIABPrint.print(opcoes);
+          else if (typeof cap.registerPlugin === "function")
+            chamada = cap.registerPlugin("SIABPrint").print(opcoes);
+          else throw new Error("a ponte nativa do aplicativo não está disponível");
+          chamada.then(fim, falha);
         } catch (erro) {
           falha(erro);
         }

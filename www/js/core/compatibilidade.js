@@ -70,6 +70,7 @@
 
   var concluido = false;
   var falhou = false;
+  var detalhes = [];
   function mostrarFalha() {
     if (!document.body || document.getElementById("falha-abertura")) return;
     var abertura = document.getElementById("abertura");
@@ -85,6 +86,14 @@
     aviso.querySelector("button").addEventListener("click", function () {
       window.location.reload();
     });
+    var motivo = document.createElement("p");
+    motivo.className = "falha-detalhe";
+    motivo.textContent =
+      "Detalhes técnicos: " +
+      (detalhes.length
+        ? detalhes.slice(0, 3).join(" | ")
+        : "o aplicativo não chegou a iniciar a rota inicial.");
+    aviso.insertBefore(motivo, aviso.querySelector("button"));
     document.body.appendChild(aviso);
   }
   window.addEventListener(
@@ -95,8 +104,22 @@
       if (
         evento.target === window ||
         (evento.target && evento.target.tagName === "SCRIPT")
-      )
+      ) {
         falhou = true;
+        if (evento.target && evento.target.tagName === "SCRIPT")
+          detalhes.push("script não carregou: " + evento.target.src);
+        else
+          detalhes.push(
+            (evento.message || "erro") +
+              (evento.filename
+                ? " (" +
+                  String(evento.filename).split("/").pop() +
+                  ":" +
+                  evento.lineno +
+                  ")"
+                : ""),
+          );
+      }
     },
     true,
   );
