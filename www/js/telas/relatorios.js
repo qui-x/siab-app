@@ -285,7 +285,7 @@ SIAB.relatorios = (() => {
   function dadosHTML(id) {
     const r = lerTodos()[id];
     if (!r)
-      return "<p>Os dados desta prática não estão disponíveis neste navegador.</p>";
+      return `<p>Os dados desta prática não estão disponíveis ${SIABPlataforma.local()}.</p>`;
     return r.recipientes
       .map(
         (t) =>
@@ -627,7 +627,7 @@ SIAB.relatorios = (() => {
     arquivoAberto = !!id && id !== SIAB.state.reportId;
     if (id) {
       atual = lerTodos()[id] || null;
-      if (!atual) SIAB.notice("Relatório não encontrado neste navegador.");
+      if (!atual) SIAB.notice(`Relatório não encontrado ${SIABPlataforma.local()}.`);
     } else capturar();
     SIAB.$("relatorio-atualizar").hidden = Boolean(
       id && id !== SIAB.state.reportId,

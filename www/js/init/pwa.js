@@ -28,6 +28,31 @@ SIAB.pwa = (() => {
   function iniciar() {
     // Dois botões: no cabeçalho (computador) e no menu ☰ → Aplicativo.
     const botoes = [SIAB.$("install-btn"), SIAB.$("drawer-install")];
+    // Aplicativo empacotado (APK, .exe, AppImage): os arquivos já estão no
+    // programa. Não há "Instalar app" nem service worker; os que ficaram de
+    // versões anteriores são removidos para nunca servir arquivos antigos.
+    if (window.SIABPlataforma && window.SIABPlataforma.empacotado) {
+      botoes.forEach((botao) => botao && (botao.hidden = true));
+      try {
+        if ("serviceWorker" in navigator)
+          navigator.serviceWorker
+            .getRegistrations()
+            .then((lista) => lista.forEach((r) => r.unregister()))
+            .catch(() => {});
+        if (window.caches)
+          caches
+            .keys()
+            .then((chaves) =>
+              chaves
+                .filter((c) => c.indexOf("siab@") === 0)
+                .forEach((c) => caches.delete(c)),
+            )
+            .catch(() => {});
+      } catch (erro) {
+        /* limpeza opcional */
+      }
+      return;
+    }
     // O HTML único não publica manifesto nem service worker.
     const publicavel =
       Boolean(document.querySelector('link[rel="manifest"]')) &&

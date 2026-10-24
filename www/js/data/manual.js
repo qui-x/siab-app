@@ -1,5 +1,8 @@
 "use strict";
 /* RC.4: registro central do Manual. Texto de uso, sem dados privados de atividades. */
+const SIAB_EMPACOTADO = Boolean(
+  window.SIABPlataforma && window.SIABPlataforma.empacotado,
+);
 SIAB.manualContent = {
   categories: [
     {
@@ -1145,7 +1148,9 @@ SIAB.manualContent = {
         },
         {
           title: "Imprimir ou salvar PDF",
-          text: "A impressão usa um formato próprio para papel. Na janela de impressão do navegador, escolha uma impressora ou Salvar como PDF, se essa opção estiver disponível.",
+          text: SIAB_EMPACOTADO
+            ? "A impressão usa um formato próprio para papel. Na tela de impressão do sistema, escolha uma impressora ou Salvar como PDF, se essa opção estiver disponível."
+            : "A impressão usa um formato próprio para papel. Na janela de impressão do navegador, escolha uma impressora ou Salvar como PDF, se essa opção estiver disponível.",
         },
       ],
       diagram: "report",
@@ -1395,18 +1400,27 @@ SIAB.manualContent = {
     },
     {
       id: "app",
-      title: "Instalação e uso offline",
+      title: SIAB_EMPACOTADO ? "Aplicativo e uso offline" : "Instalação e uso offline",
       category: "comecar",
-      summary:
-        "O Manual essencial acompanha o aplicativo e pode ser consultado sem conexão após o preparo do acesso offline.",
-      purpose:
-        "Use a versão instalada ou o arquivo HTML independente conforme a forma de acesso disponível.",
-      steps: [
-        "Na versão oferecida por um endereço compatível, abra o aplicativo uma vez conectado.",
-        "Use Instalar quando o navegador oferecer essa opção.",
-        "Teste a abertura sem conexão antes da aula.",
-        "O HTML independente pode ser aberto diretamente no navegador e também inclui este Manual.",
-      ],
+      summary: SIAB_EMPACOTADO
+        ? "O SIAB está instalado neste dispositivo e funciona sem conexão."
+        : "O Manual essencial acompanha o aplicativo e pode ser consultado sem conexão após o preparo do acesso offline.",
+      purpose: SIAB_EMPACOTADO
+        ? "Você está usando a versão em aplicativo (Android, Windows ou Linux). Ela não depende de navegador."
+        : "Use a versão instalada ou o arquivo HTML independente conforme a forma de acesso disponível.",
+      steps: SIAB_EMPACOTADO
+        ? [
+            "Abra o SIAB pelo ícone, como qualquer outro programa do dispositivo.",
+            "Tudo funciona sem internet, exceto o tradutor VLibras e a consulta de temperatura por cidade.",
+            "Para atualizar, instale a versão mais nova do aplicativo por cima da atual.",
+            "Os registros ficam guardados no aplicativo: exporte o que precisar conservar.",
+          ]
+        : [
+            "Na versão oferecida por um endereço compatível, abra o aplicativo uma vez conectado.",
+            "Use Instalar quando o navegador oferecer essa opção.",
+            "Teste a abertura sem conexão antes da aula.",
+            "O HTML independente pode ser aberto diretamente no navegador e também inclui este Manual.",
+          ],
       example: "",
       related: ["persistencia", "acessibilidade"],
       keywords: [
@@ -1423,8 +1437,10 @@ SIAB.manualContent = {
           text: "A consulta meteorológica e o VLibras dependem da internet. Não são necessários para ler o Manual ou executar a bancada.",
         },
         {
-          title: "Instalação disponível",
-          text: "A opção de instalar depende do navegador e da forma como o aplicativo foi disponibilizado. Abrir o HTML como arquivo local não instala a PWA.",
+          title: SIAB_EMPACOTADO ? "Sem botão Instalar" : "Instalação disponível",
+          text: SIAB_EMPACOTADO
+            ? "O botão Instalar app só aparece na versão para navegador. Neste aplicativo, ele não é necessário."
+            : "A opção de instalar depende do navegador e da forma como o aplicativo foi disponibilizado. Abrir o HTML como arquivo local não instala a PWA.",
         },
       ],
     },
@@ -1432,8 +1448,9 @@ SIAB.manualContent = {
       id: "persistencia",
       title: "Guardar e recuperar registros",
       category: "comecar",
-      summary:
-        "O SIAB guarda preferências, Caderno e relatórios no navegador utilizado.",
+      summary: SIAB_EMPACOTADO
+        ? "O SIAB guarda preferências, Caderno e relatórios no aplicativo."
+        : "O SIAB guarda preferências, Caderno e relatórios no navegador utilizado.",
       purpose: "Mantenha cópias exportadas do que precisa conservar ou enviar.",
       steps: [
         "Confira os registros no Caderno e os textos no relatório.",
@@ -1452,8 +1469,10 @@ SIAB.manualContent = {
       ],
       details: [
         {
-          title: "Mesmo navegador",
-          text: "Limpar os dados do site ou usar outro navegador pode impedir a retomada dos registros locais. Uma exportação é a forma de manter uma cópia independente.",
+          title: SIAB_EMPACOTADO ? "Mesmo aplicativo" : "Mesmo navegador",
+          text: SIAB_EMPACOTADO
+            ? "Desinstalar o aplicativo ou limpar os dados dele pode apagar os registros locais. Uma exportação é a forma de manter uma cópia independente."
+            : "Limpar os dados do site ou usar outro navegador pode impedir a retomada dos registros locais. Uma exportação é a forma de manter uma cópia independente.",
         },
       ],
     },

@@ -1,4 +1,4 @@
-const { app, BaseWindow, WebContentsView, protocol, net, Menu, ipcMain } = require('electron');
+const { app, BaseWindow, WebContentsView, protocol, net, Menu, ipcMain, shell } = require('electron');
 const path = require('path');
 const { pathToFileURL } = require('url');
 
@@ -38,6 +38,13 @@ function createWindow() {
   bar.webContents.loadFile(path.join(__dirname, 'shell', 'titlebar.html'));
   content.webContents.loadURL('app://siab/index.html');
 
+  // Links externos (http/https) abrem no navegador do sistema; o app nunca sai de si.
+  const abrirFora = (url) => { if (/^https?:\/\//i.test(url)) shell.openExternal(url); };
+  content.webContents.setWindowOpenHandler(({ url }) => { abrirFora(url); return { action: 'deny' }; });
+  content.webContents.on('will-navigate', (e, url) => {
+    if (!url.startsWith('app://siab')) { e.preventDefault(); abrirFora(url); }
+  });
+
   // F11 alterna tela cheia; Ctrl+Q sai.
   content.webContents.on('before-input-event', (e, input) => {
     if (input.type !== 'keyDown') return;
@@ -57,7 +64,16 @@ ipcMain.on('janela', (_e, acao) => {
   else if (acao === 'close') app.quit();
 });
 
-app.whenReady().then(() => {
+// Uma única janela: abrir o programa de novo apenas traz a janela existente para a frente.
+const unicaInstancia = app.requestSingleInstanceLock();
+if (!unicaInstancia) app.quit();
+else app.on('second-instance', () => {
+  if (!win) return;
+  if (win.isMinimized()) win.restore();
+  win.focus();
+});
+
+if (unicaInstancia) app.whenReady().then(() => {
   const root = path.join(__dirname, 'www');
   protocol.handle('app', (req) => {
     let p = decodeURIComponent(new URL(req.url).pathname);

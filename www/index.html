@@ -26,6 +26,7 @@
       rel="stylesheet"
       href="vendor/dialog-polyfill/dialog-polyfill.css?v=1.0.0+20261012"
     />
+    <script src="js/core/plataforma.js?v=1.0.0+20261012"></script>
     <link rel="stylesheet" href="css/stylesiab.css?v=1.0.0+20261012" />
     <link rel="stylesheet" href="css/mobile-study.css?v=1.0.0+20261012" />
     <script src="js/core/compatibilidade.js?v=1.0.0+20261012"></script>
@@ -42,6 +43,7 @@
     <link rel="stylesheet" href="css/manual.css?v=1.0.0+20261012" />
     <link rel="stylesheet" href="css/mobile-controls.css?v=1.0.0+20261012" />
     <link rel="stylesheet" href="css/refinements.css?v=1.0.0+20261012" />
+    <link rel="stylesheet" href="css/aplicativo.css?v=1.0.0+20261012" />
   </head>
   <body>
     <noscript
@@ -129,6 +131,7 @@
         ><a href="#/manual" data-nav="manual">Manual</a>
       </nav>
       <div class="header-actions">
+        <span id="selo-app" class="selo-app" hidden></span>
         <button id="install-btn" class="text-btn" type="button" hidden>
           Instalar app
         </button>
@@ -411,7 +414,7 @@
         </section>
         <h2>Atividades criadas</h2>
         <p class="field-hint">
-          Atividades ficam neste navegador. Editar ou excluir não altera links
+          Atividades ficam <span data-local>neste navegador</span>. Editar ou excluir não altera links
           de aluno já enviados: cada link guarda a sua própria configuração.
         </p>
         <div id="atividades-recentes"></div>
@@ -1971,6 +1974,7 @@
             <span data-app-icon="about"></span>Sobre o SIAB
           </button>
           <p class="drawer-versao">Versão <span id="drawer-versao"></span></p>
+          <p class="drawer-modo" id="drawer-modo" hidden></p>
         </section>
       </div>
     </dialog>
@@ -1997,6 +2001,7 @@
         interpretar evidências.
       </p>
       <p>Versão <span id="about-version"></span></p>
+      <p id="about-modo" hidden></p>
       <p>
         SIAB · GNU GPL v3. Interface de diálogos com dialog-polyfill,
         BSD-3-Clause.

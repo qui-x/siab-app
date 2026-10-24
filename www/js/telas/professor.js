@@ -101,7 +101,7 @@ SIAB.professor = (() => {
           (r) =>
             `<article class="recent-activity" data-activity-id="${esc(r.id)}"><strong>${esc(r.config.titulo)}</strong><div class="actions"><a class="secondary-btn" href="${esc(SIAB.atividades.link(r.token))}">Abrir</a><button class="quiet-btn" data-copy-activity="${esc(r.id)}">Copiar link</button><button class="quiet-btn" data-edit-activity="${esc(r.id)}">Editar</button><button class="quiet-btn" data-duplicate-activity="${esc(r.id)}">Duplicar</button><button class="danger-btn" data-delete-activity="${esc(r.id)}">Excluir</button></div></article>`,
         )
-        .join("") || "<p>Nenhuma atividade criada neste navegador.</p>";
+        .join("") || `<p>Nenhuma atividade criada ${SIABPlataforma.local()}.</p>`;
   }
   async function copiar(token) {
     const link = SIAB.atividades.link(token);
@@ -239,7 +239,7 @@ SIAB.professor = (() => {
               $("prof-resultado").hidden = true;
             }
             renderRecentes();
-            SIAB.notice("Atividade excluída deste navegador.");
+            SIAB.notice(`Atividade excluída ${SIABPlataforma.deste()}.`);
           },
           "Excluir atividade",
           "danger",
