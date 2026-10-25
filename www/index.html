@@ -256,6 +256,9 @@
             <a href="#/manual">Manual de uso</a>
             <a href="#/professor">Área do Professor</a>
           </nav>
+          <button class="quiet-btn" data-abrir-atividade>
+            <span data-app-icon="professor"></span>Abrir atividade
+          </button>
           <button class="quiet-btn" data-startup-settings>
             <span data-app-icon="professor"></span>Configurações de inicialização
           </button>
@@ -296,6 +299,10 @@
         <div id="roteiro-conteudo" class="reading-column"></div>
       </section>
       <section data-tela="atividade" class="tela" hidden>
+        <p id="abrir-no-app" class="abrir-no-app" hidden>
+          <a class="secondary-btn" href="#">Abrir no aplicativo SIAB</a>
+          <span>Se o aplicativo não estiver instalado, continue aqui.</span>
+        </p>
         <div id="atividade-conteudo" class="reading-column"></div>
       </section>
       <section data-tela="professor" class="tela" hidden>
@@ -1970,12 +1977,51 @@
           <h3 class="drawer-section-title" id="drawer-app">Aplicativo</h3>
           <button class="drawer-link quiet-btn" id="drawer-install" hidden>
             <span data-app-icon="install"></span>Instalar app</button
+          ><button class="drawer-link quiet-btn" data-abrir-atividade>
+            <span data-app-icon="professor"></span>Abrir atividade</button
           ><button class="drawer-link quiet-btn" id="about-btn">
             <span data-app-icon="about"></span>Sobre o SIAB
           </button>
           <p class="drawer-versao">Versão <span id="drawer-versao"></span></p>
           <p class="drawer-modo" id="drawer-modo" hidden></p>
         </section>
+      </div>
+    </dialog>
+
+    <dialog
+      id="abrir-atividade-dialog"
+      class="siab-dialog dialog-about"
+      aria-labelledby="abrir-atividade-titulo"
+    >
+      <div class="dialog-heading">
+        <h2 id="abrir-atividade-titulo">Abrir atividade</h2>
+        <button
+          type="button"
+          class="icon-btn"
+          data-close="abrir-atividade-dialog"
+          aria-label="Fechar"
+        >
+          ×
+        </button>
+      </div>
+      <p>Cole o link ou o código que o professor enviou.</p>
+      <label class="field"
+        >Link ou código<textarea
+          id="abrir-atividade-campo"
+          rows="4"
+          spellcheck="false"
+          autocomplete="off"
+          autocapitalize="off"
+        ></textarea
+      ></label>
+      <p id="abrir-atividade-estado" role="status"></p>
+      <div class="dialog-actions">
+        <button type="button" class="secondary-btn" id="abrir-atividade-colar">
+          Colar
+        </button>
+        <button type="button" class="primary-btn" id="abrir-atividade-confirmar">
+          Abrir
+        </button>
       </div>
     </dialog>
 
@@ -2385,6 +2431,7 @@
     <script src="js/a11y/preferencias.js?v=1.0.0+20261012"></script>
     <script src="js/init/pwa.js?v=1.0.0+20261012"></script>
     <script src="js/ui/activity-ui.js?v=1.0.0+20261012"></script>
+    <script src="js/ui/abrir-atividade.js?v=1.0.0+20261012"></script>
     <script src="js/init/integracao.js?v=1.0.0+20261012"></script>
     <script src="js/init/app.js?v=1.0.0+20261012"></script>
     <script src="js/ui/mobile-study.js?v=1.0.0+20261012"></script>

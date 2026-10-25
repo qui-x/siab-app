@@ -50,7 +50,15 @@
       "icon": "icon.png",
       "category": "Education",
       "artifactName": "SIAB-linux.AppImage"
-    }
+    },
+    "protocols": [
+      {
+        "name": "SIAB atividade",
+        "schemes": [
+          "siab"
+        ]
+      }
+    ]
   },
   "devDependencies": {
     "electron": "^45.0.0",

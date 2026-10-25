@@ -94,6 +94,7 @@ const ARQUIVOS = [
   "./js/a11y/preferencias.js",
   "./js/init/pwa.js",
   "./js/ui/activity-ui.js",
+  "./js/ui/abrir-atividade.js",
   "./js/init/integracao.js",
   "./js/init/app.js",
   "./js/ui/mobile-study.js",

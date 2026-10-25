@@ -11,6 +11,23 @@ protocol.registerSchemesAsPrivileged([
 
 let win, bar, content;
 
+// Links siab://atividade/<código>: chegam por argumento de linha de comando (Windows/Linux)
+// ou pelo evento open-url (macOS). Só esse esquema é aceito; quem valida o conteúdo é o SIAB.
+const PROTOCOLO = 'siab';
+let linkPendente = null;
+const linkDe = (argv) =>
+  (argv || []).find((a) => typeof a === 'string' && a.toLowerCase().startsWith(PROTOCOLO + '://')) || null;
+function entregarLink(url) {
+  if (!url) return;
+  linkPendente = url;
+  if (!content || content.webContents.isLoading()) return; // entrega ao terminar de carregar
+  content.webContents
+    .executeJavaScript('window.SIABAbrirLink && window.SIABAbrirLink(' + JSON.stringify(url) + ')')
+    .then(() => { linkPendente = null; })
+    .catch(() => {});
+}
+app.on('open-url', (e, url) => { e.preventDefault(); entregarLink(url); });
+
 function layout() {
   if (!win) return;
   const { width, height } = win.getContentBounds();
@@ -37,6 +54,7 @@ function createWindow() {
 
   bar.webContents.loadFile(path.join(__dirname, 'shell', 'titlebar.html'));
   content.webContents.loadURL('app://siab/index.html');
+  content.webContents.on('did-finish-load', () => setTimeout(() => entregarLink(linkPendente), 500));
 
   // Links externos (http/https) abrem no navegador do sistema; o app nunca sai de si.
   const abrirFora = (url) => { if (/^https?:\/\//i.test(url)) shell.openExternal(url); };
@@ -67,13 +85,20 @@ ipcMain.on('janela', (_e, acao) => {
 // Uma única janela: abrir o programa de novo apenas traz a janela existente para a frente.
 const unicaInstancia = app.requestSingleInstanceLock();
 if (!unicaInstancia) app.quit();
-else app.on('second-instance', () => {
+else app.on('second-instance', (_e, argv) => {
   if (!win) return;
   if (win.isMinimized()) win.restore();
   win.focus();
+  entregarLink(linkDe(argv));
 });
 
+linkPendente = linkDe(process.argv);
+
 if (unicaInstancia) app.whenReady().then(() => {
+  // Versão instalada (não portátil, não AppImage): o Windows passa a abrir siab:// neste programa.
+  if (app.isPackaged && !process.env.PORTABLE_EXECUTABLE_FILE && !process.env.APPIMAGE) {
+    try { app.setAsDefaultProtocolClient(PROTOCOLO); } catch (_) { /* opcional */ }
+  }
   const root = path.join(__dirname, 'www');
   protocol.handle('app', (req) => {
     let p = decodeURIComponent(new URL(req.url).pathname);

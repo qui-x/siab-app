@@ -129,7 +129,10 @@ SIAB.professor = (() => {
     );
     $("prof-resumo").textContent =
       `${c.titulo} · ${c.tipo} · ${SIAB.MODULOS[c.modulo].nome} · ${SIAB.format(c.temperatura, 1)} °C · Navegação ${c.navegacao} · Recursos: ${resources.join(", ")}`;
-    $("prof-abrir").href = SIAB.atividades.link(token);
+    $("prof-abrir").href =
+      window.SIABPlataforma && window.SIABPlataforma.empacotado
+        ? `#/atividade/${token}`
+        : SIAB.atividades.link(token);
   }
   async function criar(c, id = null) {
     if (SIAB.ActivityContext.restricted())

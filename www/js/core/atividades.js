@@ -506,7 +506,17 @@ SIAB.atividades = (() => {
     pedirEncerramento,
     atualizarCabecalho,
     ligar,
-    link: (token) => `${location.href.split("#")[0]}#/atividade/${token}`,
+    // Dentro de aplicativo (APK, .exe, AppImage) o endereço da página não é
+    // compartilhável (https://localhost/ ou app://siab/): o link usa o site público.
+    urlPublica: "https://qui-x.github.io/acidobase/",
+    link: (token) => {
+      const base =
+        window.SIABPlataforma && window.SIABPlataforma.empacotado
+          ? SIAB.atividades.urlPublica
+          : location.href.split("#")[0];
+      return `${base}#/atividade/${token}`;
+    },
+    linkApp: (token) => `siab://atividade/${token}`,
     get ativa() {
       return ativa;
     },

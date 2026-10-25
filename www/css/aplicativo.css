@@ -36,3 +36,18 @@ html[data-empacotado="true"] .drawer-link {
 @media (max-width: 900px) {
   #selo-app { display: none; }
 }
+
+/* Abrir atividade por link, código ou aplicativo */
+.abrir-no-app {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+  margin: 0 0 16px;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+.abrir-no-app[hidden] { display: none; }
+#abrir-atividade-estado:empty { display: none; }
+#abrir-atividade-estado { color: var(--muted); font-size: 0.9rem; }
+#abrir-atividade-campo { width: 100%; }

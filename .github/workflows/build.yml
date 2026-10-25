@@ -51,7 +51,7 @@ jobs:
           print('barras do sistema ajustadas')
           FIM_ARQUIVO
           python /tmp/patch_styles.py android/app/src/main/res/values/styles.xml
-      - name: Habilitar impressão no Android
+      - name: Habilitar impressão e abertura de links no Android
         run: |
           D=android/app/src/main/java/io/github/quix/siab
           test -d "$D" || { echo "Pasta $D não existe"; exit 1; }
@@ -103,21 +103,97 @@ jobs:
               }
           }
           FIM_ARQUIVO
+          cat > $D/LinkPlugin.java <<'FIM_ARQUIVO'
+          package io.github.quix.siab;
+
+          import com.getcapacitor.JSObject;
+          import com.getcapacitor.Plugin;
+          import com.getcapacitor.PluginCall;
+          import com.getcapacitor.PluginMethod;
+          import com.getcapacitor.annotation.CapacitorPlugin;
+
+          /** Guarda o link siab:// que abriu o aplicativo para o SIAB ler quando estiver pronto. */
+          @CapacitorPlugin(name = "SIABLink")
+          public class LinkPlugin extends Plugin {
+              static volatile String pendente = null;
+
+              @PluginMethod
+              public void getLaunchLink(PluginCall call) {
+                  JSObject resposta = new JSObject();
+                  String url = pendente;
+                  pendente = null;
+                  if (url != null) resposta.put("url", url);
+                  call.resolve(resposta);
+              }
+          }
+          FIM_ARQUIVO
           cat > $D/MainActivity.java <<'FIM_ARQUIVO'
           package io.github.quix.siab;
 
+          import android.content.Intent;
+          import android.net.Uri;
           import android.os.Bundle;
+          import android.webkit.WebView;
+
           import com.getcapacitor.BridgeActivity;
+
+          import org.json.JSONObject;
 
           public class MainActivity extends BridgeActivity {
               @Override
               public void onCreate(Bundle savedInstanceState) {
                   registerPlugin(PrintPlugin.class);
+                  registerPlugin(LinkPlugin.class);
                   super.onCreate(savedInstanceState);
+                  guardarLink(getIntent());
+              }
+
+              // Aplicativo já aberto recebe um novo link siab://
+              @Override
+              protected void onNewIntent(Intent intent) {
+                  super.onNewIntent(intent);
+                  guardarLink(intent);
+                  entregarLink();
+              }
+
+              private void guardarLink(Intent intent) {
+                  if (intent == null) return;
+                  Uri dados = intent.getData();
+                  if (dados != null && "siab".equals(dados.getScheme())) {
+                      LinkPlugin.pendente = dados.toString();
+                  }
+              }
+
+              private void entregarLink() {
+                  final String url = LinkPlugin.pendente;
+                  if (url == null || getBridge() == null) return;
+                  final WebView web = getBridge().getWebView();
+                  web.post(() -> web.evaluateJavascript(
+                      "(function(u){if(window.SIABAbrirLink){window.SIABAbrirLink(u);return true;}return false;})("
+                          + JSONObject.quote(url) + ")",
+                      valor -> { if ("true".equals(valor)) LinkPlugin.pendente = null; }));
               }
           }
           FIM_ARQUIVO
-          grep -c registerPlugin $D/MainActivity.java
+          cat > /tmp/patch_manifest.py <<'FIM_ARQUIVO'
+          import sys
+          p = sys.argv[1]
+          s = open(p, encoding="utf-8").read()
+          filtro = """
+                      <intent-filter>
+                          <action android:name="android.intent.action.VIEW" />
+                          <category android:name="android.intent.category.DEFAULT" />
+                          <category android:name="android.intent.category.BROWSABLE" />
+                          <data android:scheme="siab" android:host="atividade" />
+                      </intent-filter>
+          """
+          fim = "        </activity>"
+          assert s.count(fim) == 1, "AndroidManifest.xml inesperado"
+          open(p, "w", encoding="utf-8").write(s.replace(fim, filtro + fim))
+          print("filtro siab:// adicionado")
+          FIM_ARQUIVO
+          python /tmp/patch_manifest.py android/app/src/main/AndroidManifest.xml
+          grep -c 'scheme="siab"' android/app/src/main/AndroidManifest.xml
       - run: npm run build:apk
       - uses: actions/upload-artifact@v4
         with: { name: SIAB-apk, path: android/app/build/outputs/apk/debug/app-debug.apk }
