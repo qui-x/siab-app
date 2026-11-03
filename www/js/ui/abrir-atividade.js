@@ -7,18 +7,49 @@ SIAB.abrirLink = (() => {
   // v1.<chave 32 bytes>.<iv 12 bytes>.<conteúdo cifrado>, em base64url
   const PADRAO = /v1\.[A-Za-z0-9_-]{43}\.[A-Za-z0-9_-]{16}\.[A-Za-z0-9_-]{22,}/;
 
-  function extrairToken(texto) {
-    const achado = PADRAO.exec(String(texto || ""));
-    return achado ? achado[0] : null;
+  // v2 (curto): 2.<base64url>, confirmado pelo CRC embutido
+  const PADRAO_V2 = /(^|[^A-Za-z0-9_.-])(2\.[A-Za-z0-9_-]{12,})/g;
+
+  const CAMINHO = /(?:#\/|siab:\/\/)(?:a|atividade)\/([A-Za-z0-9_.~-]+)/g;
+  const EXATO_V1 = new RegExp("^" + PADRAO.source + "$");
+
+  // Confere se o texto é uma referência de atividade completa e válida
+  function referenciaValida(c) {
+    if (!c) return false;
+    if (c.indexOf("v1.") === 0) return EXATO_V1.test(c);
+    if (c.indexOf("2.") === 0) return SIAB.atividadeV2 && SIAB.atividadeV2.valido(c);
+    return Boolean(SIAB.atividadeV2 && SIAB.atividadeV2.validoNome(c));
   }
 
-  function abrir(texto) {
+  function extrairToken(texto) {
+    const t = String(texto || "").trim();
+    // 1) endereços conhecidos: .../#/a/<nome>, .../#/atividade/<código>, siab://...
+    const caminhos = new RegExp(CAMINHO.source, "g");
+    let m;
+    while ((m = caminhos.exec(t)) !== null) {
+      const c = m[1].replace(/\.+$/, "");
+      if (referenciaValida(c)) return c;
+    }
+    // 2) o texto inteiro é só o nome da atividade ou o código
+    if (/^[A-Za-z0-9_.~-]+$/.test(t) && referenciaValida(t.replace(/\.+$/, "")))
+      return t.replace(/\.+$/, "");
+    // 3) código solto no meio de uma frase
+    let achado;
+    PADRAO_V2.lastIndex = 0;
+    while ((achado = PADRAO_V2.exec(t)) !== null)
+      if (SIAB.atividadeV2 && SIAB.atividadeV2.valido(achado[2])) return achado[2];
+    const v1 = PADRAO.exec(t);
+    return v1 ? v1[0] : null;
+  }
+
+  function abrir(texto, silencioso) {
     const token = extrairToken(texto);
     if (!token) {
-      SIAB.notice("Não encontrei uma atividade nesse link ou código.");
+      if (!silencioso)
+        SIAB.notice("Não encontrei uma atividade nesse link ou código.");
       return false;
     }
-    SIAB.irPara(`#/atividade/${token}`);
+    SIAB.irPara(`#/a/${token}`);
     return true;
   }
 
@@ -64,8 +95,7 @@ SIAB.abrirLink = (() => {
     if (!bloco) return;
     const atualizar = () => {
       const empacotado = window.SIABPlataforma && window.SIABPlataforma.empacotado;
-      const rota = /^#\/atividade\/(.+)$/.exec(location.hash);
-      const token = rota && extrairToken(rota[1]);
+      const token = extrairToken(location.hash);
       if (empacotado || !token || !/Android/i.test(navigator.userAgent)) {
         bloco.hidden = true;
         return;
@@ -87,7 +117,7 @@ SIAB.abrirLink = (() => {
     cap
       .nativePromise("SIABLink", "getLaunchLink", {})
       .then((resposta) => {
-        if (resposta && resposta.url) abrir(resposta.url);
+        if (resposta && resposta.url) abrir(resposta.url, true);
       })
       .catch(() => {});
   }
@@ -102,7 +132,8 @@ SIAB.abrirLink = (() => {
     window.addEventListener("load", () => setTimeout(lerLinkInicialDoAndroid, 400));
   }
 
-  window.SIABAbrirLink = (texto) => abrir(texto);
+  // Chamado pelo sistema (Android e Electron): link do site sem atividade só abre o app.
+  window.SIABAbrirLink = (texto) => abrir(texto, true);
   ligar();
   return { extrairToken, abrir };
 })();

@@ -26,6 +26,7 @@ SIAB.rotear = () => {
       "Este endereço foi atualizado para a organização atual do SIAB.",
     );
   }
+  if (nome === "a") nome = "atividade"; // endereço curto: #/a/<nome da atividade>
   if (nome === "missao" && SIAB.missaoAlias?.[parametro])
     parametro = SIAB.missaoAlias[parametro];
   if (nome === "manual" && SIAB.manualRegistry?.aliases[parametro])

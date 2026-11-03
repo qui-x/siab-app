@@ -69,6 +69,12 @@ SIAB.atividades = (() => {
     };
   }
   async function codificar(config) {
+    // Preferência: link por nome (#/a/<nome>[~ajustes]); depois o código v2; por fim o v1 completo.
+    const valida = validar(config);
+    const porNome = SIAB.atividadeV2 && SIAB.atividadeV2.paraNome(valida);
+    if (porNome) return porNome;
+    const curto = SIAB.atividadeV2 && SIAB.atividadeV2.paraToken(valida);
+    if (curto) return curto;
     if (!crypto?.subtle)
       throw new Error(
         "Geração de links requer contexto seguro (HTTPS, localhost ou arquivo local compatível).",
@@ -90,6 +96,8 @@ SIAB.atividades = (() => {
   async function decodificar(token) {
     if (typeof token !== "string" || token.length > 18000)
       throw new Error("Link inválido.");
+    if (token.startsWith("2.")) return validar(SIAB.atividadeV2.ler(token));
+    if (!token.startsWith("v1.")) return validar(SIAB.atividadeV2.lerNome(token));
     const [v, k, i, c, ...extra] = token.split(".");
     if (v !== "v1" || extra.length || !k || !i || !c)
       throw new Error("Link incompleto.");
@@ -107,7 +115,7 @@ SIAB.atividades = (() => {
     );
     return validar(JSON.parse(new TextDecoder().decode(json)));
   }
-  const chave = (token) => "siab_atividade_" + token.split(".")[1];
+  const chave = (token) => "siab_atividade_" + (token.split(".")[1] || token);
   const rotaAtividade = () => `#/atividade/${ativa.token}`;
   const uuid = () =>
     globalThis.crypto?.randomUUID?.() ||
@@ -514,7 +522,7 @@ SIAB.atividades = (() => {
         window.SIABPlataforma && window.SIABPlataforma.empacotado
           ? SIAB.atividades.urlPublica
           : location.href.split("#")[0];
-      return `${base}#/atividade/${token}`;
+      return `${base}#/a/${token}`;
     },
     linkApp: (token) => `siab://atividade/${token}`,
     get ativa() {

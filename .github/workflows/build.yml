@@ -28,6 +28,9 @@ jobs:
         with: { name: SIAB-linux, path: dist/SIAB-linux.AppImage }
   apk:
     runs-on: ubuntu-latest
+    env:
+      SIAB_KS_B64: ${{ secrets.SIAB_KEYSTORE_B64 }}
+      SIAB_KS_PASS: ${{ secrets.SIAB_KEYSTORE_PASS }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -159,7 +162,11 @@ jobs:
               private void guardarLink(Intent intent) {
                   if (intent == null) return;
                   Uri dados = intent.getData();
-                  if (dados != null && "siab".equals(dados.getScheme())) {
+                  if (dados == null) return;
+                  String esquema = dados.getScheme();
+                  boolean linkSiab = "siab".equals(esquema);
+                  boolean linkSite = "https".equals(esquema) && "qui-x.github.io".equals(dados.getHost());
+                  if (linkSiab || linkSite) {
                       LinkPlugin.pendente = dados.toString();
                   }
               }
@@ -179,21 +186,41 @@ jobs:
           import sys
           p = sys.argv[1]
           s = open(p, encoding="utf-8").read()
-          filtro = """
+          filtros = """
                       <intent-filter>
                           <action android:name="android.intent.action.VIEW" />
                           <category android:name="android.intent.category.DEFAULT" />
                           <category android:name="android.intent.category.BROWSABLE" />
                           <data android:scheme="siab" android:host="atividade" />
                       </intent-filter>
+
+                      <intent-filter android:autoVerify="true">
+                          <action android:name="android.intent.action.VIEW" />
+                          <category android:name="android.intent.category.DEFAULT" />
+                          <category android:name="android.intent.category.BROWSABLE" />
+                          <data android:scheme="https" android:host="qui-x.github.io" android:pathPrefix="/acidobase" />
+                      </intent-filter>
           """
           fim = "        </activity>"
           assert s.count(fim) == 1, "AndroidManifest.xml inesperado"
-          open(p, "w", encoding="utf-8").write(s.replace(fim, filtro + fim))
-          print("filtro siab:// adicionado")
+          open(p, "w", encoding="utf-8").write(s.replace(fim, filtros + fim))
+          print("filtros siab:// e https adicionados")
           FIM_ARQUIVO
           python /tmp/patch_manifest.py android/app/src/main/AndroidManifest.xml
-          grep -c 'scheme="siab"' android/app/src/main/AndroidManifest.xml
+          grep -c 'qui-x.github.io' android/app/src/main/AndroidManifest.xml
       - run: npm run build:apk
+      - name: Assinar com a chave fixa do SIAB
+        if: env.SIAB_KS_B64 != ''
+        run: |
+          APK=android/app/build/outputs/apk/debug/app-debug.apk
+          BT=$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -1)
+          echo "$SIAB_KS_B64" | base64 -d > /tmp/siab.keystore
+          "$BT/apksigner" sign --ks /tmp/siab.keystore --ks-type PKCS12 --ks-key-alias siab --ks-pass env:SIAB_KS_PASS --key-pass env:SIAB_KS_PASS --out /tmp/siab-signed.apk "$APK"
+          mv /tmp/siab-signed.apk "$APK"
+          rm -f /tmp/siab.keystore
+      - name: Impressão digital do certificado do APK
+        run: |
+          BT=$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -1)
+          "$BT/apksigner" verify --print-certs android/app/build/outputs/apk/debug/app-debug.apk | grep -i "SHA-256"
       - uses: actions/upload-artifact@v4
         with: { name: SIAB-apk, path: android/app/build/outputs/apk/debug/app-debug.apk }
