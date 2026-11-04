@@ -3,9 +3,9 @@
    manter SIAB.version): o navegador baixa tudo de novo, a versão nova assume e o app
    avisa "Recarregar". A lista ARQUIVOS precisa conter todo arquivo usado pela
    página. */
-// 1.0.0 com a correção da bancada mobile. O "+20261012" só renova o cache de
-// quem abriu a publicação 1.0.0 anterior (SIAB.version continua 1.0.0).
-const VERSAO = "siab-1.0.0+20261012";
+// Abertura visual original restaurada. Nova versão do cache elimina modelos,
+// player de vídeo e bibliotecas de abertura 3D das cópias offline.
+const VERSAO = "siab-1.0.0+20261104-links-e-aplicativo";
 // Projetos do mesmo usuario.github.io compartilham a origem. Cada publicação
 // precisa de seu próprio cache; atualizar uma cópia não deve apagar outra.
 const BASE = new URL(self.registration.scope);

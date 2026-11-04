@@ -39,14 +39,23 @@ html[data-empacotado="true"] .drawer-link {
 
 /* Abrir atividade por link, código ou aplicativo */
 .abrir-no-app {
+  position: sticky;
+  top: 0;
+  z-index: 20;
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px 14px;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
   margin: 0 0 16px;
+  padding: 12px;
+  border: 1px solid currentColor;
+  border-radius: 12px;
+  background: var(--panel, #0c1520);
   font-size: 0.9rem;
+  text-align: center;
   color: var(--muted);
 }
+.abrir-no-app .primary-btn { display: block; text-align: center; }
 .abrir-no-app[hidden] { display: none; }
 #abrir-atividade-estado:empty { display: none; }
 #abrir-atividade-estado { color: var(--muted); font-size: 0.9rem; }

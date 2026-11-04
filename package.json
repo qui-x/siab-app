@@ -1,7 +1,7 @@
 {
   "name": "siab",
   "version": "1.0.0",
-  "description": "SIAB - Simulador Interativo de Ácidos e Bases",
+  "description": "SIAB - Simulador de Indicadores Ácido-Base",
   "main": "main.js",
   "author": "qui-x",
   "license": "GPL-3.0",

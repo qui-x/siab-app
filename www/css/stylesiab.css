@@ -201,7 +201,7 @@ td { font-family: Consolas, monospace; }
 .header-brand div { min-width: 0; }
 .header-brand strong { font-size: 1rem; line-height: 1.2; letter-spacing: .07em; display: block; color: var(--accent); }
 .header-brand span { font-size: .72rem; line-height: 1.3; color: var(--secondary); display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-/* Nome por extenso em duas linhas quando o espaço é menor ("Simulador Interativo / de Ácidos e Bases"). */
+/* Nome por extenso em duas linhas quando o espaço é menor ("Simulador de Indicadores / Ácido-Base"). */
 @media (max-width: 1200px) {
   .header-brand span { white-space: normal; max-width: 21ch; font-size: .66rem; line-height: 1.2; }
 }
@@ -1316,7 +1316,7 @@ kbd { font-family: Consolas, monospace; font-size: .8rem; padding: 2px 7px; bord
   /* Papel A4, margens de documento e número da página no rodapé. */
   @page {
     size: A4; margin: 14mm 14mm 16mm;
-    @bottom-left { content: "SIAB · Simulador Interativo de Ácidos e Bases"; font: 7.5pt system-ui, sans-serif; color: #666; }
+    @bottom-left { content: "SIAB · Simulador de Indicadores Ácido-Base"; font: 7.5pt system-ui, sans-serif; color: #666; }
     @bottom-right { content: "Página " counter(page) " de " counter(pages); font: 7.5pt system-ui, sans-serif; color: #666; }
   }
   /* Paleta de papel em qualquer tema (escuro, claro ou alto contraste). */

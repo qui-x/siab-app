@@ -47,7 +47,7 @@ SIAB.impressao = (() => {
   function cabecalho(titulo, { aluno = true, subtitulo = "" } = {}) {
     return `<header class="folha-cabecalho">
       <div class="folha-titulo">
-        <div class="folha-marca">${LOGO}<div><strong>SIAB</strong><span>Simulador Interativo de Ácidos e Bases</span></div></div>
+        <div class="folha-marca">${LOGO}<div><strong>SIAB</strong><span>Simulador de Indicadores Ácido-Base</span></div></div>
         <h1>${esc(titulo)}</h1>
         <p class="folha-sub">${subtitulo ? `${esc(subtitulo)} · ` : ""}impresso em ${agora()} · versão ${SIAB.version}</p>
       </div>
